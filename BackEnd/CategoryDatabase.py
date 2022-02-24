@@ -16,10 +16,15 @@ class CategoryDatabase:
     def create_category(self, userId, category_name, category_description):
         """ Method to create a new category for a user """
         response = self.category_table.put_item(
-            Item={
-                'category': category_name,
-                'description': category_description,
-                'user': userId
-            }
-        )
+            Item={'category': category_name,
+                  'description': category_description,
+                  'user': userId})
+
         return response
+
+    def get_categories(self, userId):
+        """ Method to return list of all categories for a user """
+        response = self.category_table(
+            KeyConditionExpression=Key('user').eq(userId))
+
+        return response['Items']
