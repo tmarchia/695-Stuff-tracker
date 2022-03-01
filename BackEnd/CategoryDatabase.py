@@ -10,7 +10,7 @@ class CategoryDatabase:
     def __init__(self, databaseUrl="http://localhost:8000"):
         """ Initialize the connection to our category table """
         self.database = boto3.resource(
-            'dynamodb', endpoint_url=databaseUrl, region_name='us-west-2')
+            'dynamodb', endpoint_url=databaseUrl, region_name='us-east-1')
         self.category_table = self.database.Table('Categories')
 
     def create_category(self, userId, category_name, category_description):
@@ -24,7 +24,7 @@ class CategoryDatabase:
 
     def get_categories(self, userId):
         """ Method to return list of all categories for a user """
-        response = self.category_table(
-            KeyConditionExpression=Key('user').eq(userId))
+        response = self.scan(
+            KeyConditionExpression=Attr('user').eq(userId))
 
         return response['Items']
