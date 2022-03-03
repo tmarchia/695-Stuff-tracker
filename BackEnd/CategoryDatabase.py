@@ -7,24 +7,35 @@ import boto3
 class CategoryDatabase:
     """ Class CategoryDatabase """
 
-    def __init__(self, databaseUrl="http://localhost:8000"):
+    def __init__(self, database_url="http://localhost:8000"):
         """ Initialize the connection to our category table """
         self.database = boto3.resource(
-            'dynamodb', endpoint_url=databaseUrl, region_name='us-east-1')
-        self.category_table = self.database.Table('Categories')
+            'dynamodb', endpoint_url=database_url, region_name='us-east-1')
+        self.category_table = self.database.Table('CategoryTable')
 
-    def create_category(self, userId, category_name, category_description):
+    def create_category(self, user_name, category_name, category_desc):
         """ Method to create a new category for a user """
         response = self.category_table.put_item(
-            Item={'category': category_name,
-                  'description': category_description,
-                  'user': userId})
+            Item={'UserName': user_name,
+                  'Category': category_name,
+                  'Description': category_desc})
 
         return response
 
-    def get_categories(self, userId):
+    def update_category_desc(self, user_name, category_name, new_category_desc):
+        """ Method to update an existing category for a user """
+        response = self.category_table.update_item(
+            Key={'UserName': user_name,
+                 'Category': category_name},
+            UpdateExpression={"SET Description= :desc"},
+            ExpressionAttributeValues={
+                ':desc': new_category_desc})
+
+        return response
+
+    def get_categories(self, user_name):
         """ Method to return list of all categories for a user """
-        response = self.scan(
-            KeyConditionExpression=Attr('user').eq(userId))
+        response = self.query(
+            KeyConditionExpression=Key('UserName').eq(user_name))
 
         return response['Items']
