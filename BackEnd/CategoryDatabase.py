@@ -10,10 +10,17 @@ class CategoryDatabase:
 
     def __init__(self):
         """ Initialize the connection to our category table """
+        access_key_id=''
+        secret_access_key=''
+        with open('/home/ec2-user/config/FixerKeys.txt') as key_file:
+            lines = key_file.readlines()
+            access_key_id=lines[0].split(':')[1].strip()
+            secret_access_key=lines[1].split(':')[1].strip()
+
         self.database = boto3.resource(
             'dynamodb',
-            aws_access_key_id='AKIARGBHMBSJ3FAIIXLM',
-            aws_secret_access_key='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',
+            aws_access_key_id=access_key_id,
+            aws_secret_access_key=secret_access_key,
             region_name='us-east-1')
         self.category_table = self.database.Table('CategoryTable')
 
