@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>Login Page</title>
+</head>
+<body>
+<center>
+<form action =""method ="POST" style = "margin-top :150px; padding-left:400px; padding-right:400px;">
+<fieldset style ="background-image :linear-gradient(blue,white,yellow)">
+<h2>Login Panel</h2>
+	<table cellspacing=10,cekkpadding = 10>
+		<tr>
+			<td>UserName</td>
+			<td><input type = "text" name = "username"></td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td><input type = "password" name = "password"></td>
+		</tr>
+		<tr>
+			<td colspan =2><input type = "submit" name = "submit" value = "Login" style = "width:230px;padding: 5px; font-size:15px;"></td>
+		</tr>
+	</table>
+<p>
+{%if error%}
+{{eror}}
+{%endif%}
+</p>
+</fieldset>	
+</form>
+<center>
+</body>
+</html>
