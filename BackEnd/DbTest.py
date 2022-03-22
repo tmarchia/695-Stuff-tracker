@@ -13,13 +13,13 @@ def main():
 
     print("\nAdding Categories for bob and sue")
     catDatabase.create_category(
-        "sue", "Closet Items", "This category contains items found in my Closet.")
+        "sue", "Closet Items", "Bottom shelf")
     catDatabase.create_category(
-        "bob", "Closet Items", "This category contains items found in my Closet.")
+        "bob", "Closet Items", "Top shelf")
     catDatabase.create_category(
-        "bob", "Kitchen Items", "This category contains items found in my Kitchen.")
+        "bob", "Kitchen Items", "Pantry")
     catDatabase.create_category(
-        "bob", "Bathroom Items", "This category contains items found in my Bathroom.")
+        "bob", "Bathroom Items", "Under sink")
 
     userCats = catDatabase.get_categories("bob")
     print("\nUser Bob's Items:")
@@ -30,8 +30,8 @@ def main():
     catDatabase.delete_category("bob", "Kitchen Items")
 
     print("\nUpdating Bob's Closet Category")
-    catDatabase.update_category_desc(
-        "bob", "Closet Items", "Updated closet category description.")
+    catDatabase.update_category_location(
+        "bob", "Closet Items", "Bottom shelf")
 
     userCats = catDatabase.get_categories("bob")
     print("\nUser Bob's Categories:")

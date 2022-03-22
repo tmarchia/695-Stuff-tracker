@@ -15,7 +15,7 @@ def create_new_category():
     """ Function for the create new category webpage """
     if request.method == 'POST':
         category = request.form['category']
-        description = request.form['description']
+        location = request.form['location']
         categoryDb.create_category(user_name, category, description)
 
     return render_template('home_page.html')
