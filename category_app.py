@@ -17,7 +17,7 @@ def create_new_category():
     if request.method == 'POST':
         category = request.form['AddArea']
         location = request.form['location']
-        categoryDb.create_category(user_name, category, location)
+        categoryDb.create_category(session["username"], category, location)
         # TODO - comment this in when home page is available
         return redirect('/home_page')
     return render_template('AddCategory.html')
@@ -32,7 +32,7 @@ def create_new_item():
         location = request.form['location']
         purchase_date = request.form['purchase_date']
         tags = request.form['tags']
-        itemDb.add_item(user_name, item_name, category,
+        itemDb.add_item(session["username"], item_name, category,
                         location, purchase_date, tags)
         # TODO - comment this in when home page is available
         return redirect('/home_page')
