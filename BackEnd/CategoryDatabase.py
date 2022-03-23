@@ -29,7 +29,7 @@ class CategoryDatabase:
         response = self.category_table.put_item(
             Item={'userName': user_name,
                   'categoryName': category_name,
-                  'location': location})
+                  'categoryLocation': location})
         return response
 
     def update_category_loc(self, user_name, category_name, new_location):
@@ -37,7 +37,7 @@ class CategoryDatabase:
         response = self.category_table.update_item(
             Key={'userName': user_name,
                  'categoryName': category_name},
-            UpdateExpression="set location = :loc",
+            UpdateExpression="set categoryLocation = :loc",
             ExpressionAttributeValues={
                 ':loc': new_location},
             ReturnValues="UPDATED_NEW")

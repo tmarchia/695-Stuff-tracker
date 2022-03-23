@@ -19,7 +19,7 @@ def create_new_category():
         location = request.form['location']
         categoryDb.create_category(user_name, category, location)
         # TODO - comment this in when home page is available
-        return redirect('/')
+        return redirect('/home_page')
     return render_template('AddCategory.html')
 
 
@@ -35,7 +35,7 @@ def create_new_item():
         itemDb.add_item(user_name, item_name, category,
                         location, purchase_date, tags)
         # TODO - comment this in when home page is available
-        return redirect('/')
+        return redirect('/home_page')
     elif request.method == 'GET':
         categories = categoryDb.get_categories(user_name)
         return render_template('AddItem.html', categories=categories)
@@ -82,6 +82,11 @@ def login():
                 msg = "Please enter valid username and password"
 
     return render_template("Sign-in.html", msg=msg)
+
+
+@app.route('/home_page', methods=('GET', 'POST'))
+def home_page():
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
