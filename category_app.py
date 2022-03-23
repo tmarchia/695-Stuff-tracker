@@ -41,7 +41,7 @@ def create_new_item():
         return render_template('AddItem.html', categories=categories)
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/signup", methods=['GET', 'POST'])
 def welcome():
     msg = None
     if (request.method == 'POST'):
@@ -60,7 +60,7 @@ def welcome():
     return render_template("Sign-up.html", msg=msg)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def login():
     r = ""
     msg = ""
