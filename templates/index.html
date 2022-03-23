@@ -21,7 +21,7 @@
 					<!-- Inner -->
 						<div class="inner">
 							<header>
-								<h1><a href="index.html" id="logo">Welcome to Fixer!</a></h1>
+								<h1><a href="{{ url_for('home_page') }}" id="logo">Welcome to Fixer!</a></h1>
 								<hr />
 								<p>We are here to fix your life</p>
 							</header>
@@ -30,7 +30,7 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="index.html">Home</a></li>
+								<li><a href="{{ url_for('home_page') }}">Home</a></li>
 								<li><a href="{{ url_for('create_new_item') }}">Add Item</a></li>
 								<li><a href="{{ url_for('create_new_category') }}">Add Category</a></li>
 							</ul>
