@@ -1,16 +1,11 @@
-!DOCTYPE HTML>
-<!--
-	Helios by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Helios by HTML5 UP</title>
+		<title>Home Page</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="static/styles/main.css" />
+		<noscript><link rel="stylesheet" href="static/styles/noscript.css" /></noscript>
 	</head>
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
@@ -21,7 +16,7 @@
 					<!-- Inner -->
 						<div class="inner">
 							<header>
-								<h1><a href="index.html" id="logo">Welcome to Fixer!</a></h1>
+								<h1><a href="{{ url_for('home_page') }}" id="logo">Welcome to Fixer!</a></h1>
 								<hr />
 								<p>We are here to fix your life</p>
 							</header>
@@ -30,9 +25,9 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li><a href="AddItem.html">Add Item</a></li>
-								<li><a href="AddCategory.html">Add Category</a></li>
+								<li><a href="{{ url_for('home_page') }}">Home</a></li>
+								<li><a href="{{ url_for('create_new_item') }}">Add Item</a></li>
+								<li><a href="{{ url_for('create_new_category') }}">Add Category</a></li>
 							</ul>
 						</nav>
 
@@ -120,14 +115,14 @@
 		</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+			<script src="static/js/jquery.min.js"></script>
+			<script src="static/js/jquery.dropotron.min.js"></script>
+			<script src="static/js/jquery.scrolly.min.js"></script>
+			<script src="static/js/jquery.scrollex.min.js"></script>
+			<script src="static/js/browser.min.js"></script>
+			<script src="static/js/breakpoints.min.js"></script>
+			<script src="static/js/util.js"></script>
+			<script src="static/js/main.js"></script>
 
 	</body>
 </html>
