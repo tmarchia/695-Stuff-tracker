@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Add Item</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="index.html" id="logo">Add Item</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+          <nav id="nav">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="AddItem.html">Add Item</a></li>
+              <li><a href="AddCategory.html">Add Category</a></li>
+            </ul>
+          </nav>
+
+      </div>
+
+				</div>
+
+			<!-- Main -->
+				
+			<form>
+			
+				<label> <input type="text" name="item_name" placeholder="Item Name"/> </label>
+				<label> <input type="file" id="img" name="img" accept="image/*"> </label>
+				<select name = "Select Category">
+					<option value = "" disable selected>Select Category</option>
+					{% for cat in categories %}
+					<option value = "{{cat["categoryName"]}}">{{cat["categoryName"]}}</option>
+					{% endfor %}
+				  </select>
+				  <label> <input type="text" name="location" placeholder="Item Location">
+					<label> <input type="date" name="purchase_date" value="Purchase Date" min="1990-01-01" max="2022-04-22"> </label>
+					<label> <input type="text" name="tags" placeholder="#Tags (comma separated)"/> </label>
+					<button class="red" type="submit" formmethod="post"><i class="icon ion-md-lock"></i>Add</button>
+				
+			  </form>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
