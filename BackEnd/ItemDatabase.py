@@ -10,12 +10,12 @@ class ItemDatabase:
 
     def __init__(self):
         """ Initialize the connection to our item table """
-        access_key_id=''
-        secret_access_key=''
+        access_key_id = ''
+        secret_access_key = ''
         with open('/home/ec2-user/config/FixerKeys.txt') as key_file:
             lines = key_file.readlines()
-            access_key_id=lines[0].split(':')[1].strip()
-            secret_access_key=lines[1].split(':')[1].strip()
+            access_key_id = lines[0].split(':')[1].strip()
+            secret_access_key = lines[1].split(':')[1].strip()
 
         self.database = boto3.resource(
             'dynamodb',
@@ -24,25 +24,28 @@ class ItemDatabase:
             region_name='us-east-1')
         self.item_table = self.database.Table('ItemTable')
 
-    def add_item(self, user_name, item_name, item_desc, category):
+    def add_item(self, user_name, item_name, category, location, purchase_date, tags):
         """ Method to create a new item for a user """
+        tags_list = tags.split(',')
         response = self.item_table.put_item(
             Item={'userName': user_name,
                   'itemName': item_name,
-                  'description': item_desc,
-                  'category': category})
+                  'category': category,
+                  'location': location,
+                  'purchase_date': purchase_date,
+                  'tags': tags_list})
 
         return response
 
-    def update_item(self, user_name, item_name, new_item_desc, new_category):
+    def update_item(self, user_name, item_name, new_category, new_location):
         """ Method to update an existing item's information for a user """
         response = self.item_table.update_item(
             Key={'userName': user_name,
                  'itemName': item_name},
-            UpdateExpression="set description= :desc, category= :cat",
+            UpdateExpression="set category= :cat, location= :loc",
             ExpressionAttributeValues={
-                ':desc': new_item_desc,
-                ':cat': new_category})
+                ':cat': new_category,
+                ':loc': new_location})
 
         return response
 

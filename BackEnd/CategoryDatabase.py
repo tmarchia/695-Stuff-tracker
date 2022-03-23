@@ -10,12 +10,12 @@ class CategoryDatabase:
 
     def __init__(self):
         """ Initialize the connection to our category table """
-        access_key_id=''
-        secret_access_key=''
+        access_key_id = ''
+        secret_access_key = ''
         with open('/home/ec2-user/config/FixerKeys.txt') as key_file:
             lines = key_file.readlines()
-            access_key_id=lines[0].split(':')[1].strip()
-            secret_access_key=lines[1].split(':')[1].strip()
+            access_key_id = lines[0].split(':')[1].strip()
+            secret_access_key = lines[1].split(':')[1].strip()
 
         self.database = boto3.resource(
             'dynamodb',
@@ -24,22 +24,22 @@ class CategoryDatabase:
             region_name='us-east-1')
         self.category_table = self.database.Table('CategoryTable')
 
-    def create_category(self, user_name, category_name, category_desc):
+    def create_category(self, user_name, category_name, location):
         """ Method to create a new category for a user """
         response = self.category_table.put_item(
             Item={'userName': user_name,
                   'categoryName': category_name,
-                  'description': category_desc})
+                  'location': location})
         return response
 
-    def update_category_desc(self, user_name, category_name, new_category_desc):
+    def update_category_loc(self, user_name, category_name, new_location):
         """ Method to update an existing category for a user """
         response = self.category_table.update_item(
             Key={'userName': user_name,
                  'categoryName': category_name},
-            UpdateExpression="set description = :desc",
+            UpdateExpression="set location = :loc",
             ExpressionAttributeValues={
-                ':desc': new_category_desc},
+                ':loc': new_location},
             ReturnValues="UPDATED_NEW")
 
         return response
