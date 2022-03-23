@@ -2,7 +2,7 @@
 This Script is to implement our flask methods to connect to our front end
 """
 
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session
 from BackEnd import CategoryDatabase, ItemDatabase
 
 app = Flask(__name__)
@@ -19,7 +19,7 @@ def create_new_category():
         location = request.form['location']
         categoryDb.create_category(user_name, category, location)
         # TODO - comment this in when home page is available
-        return redirect('/home_page')
+        return redirect('/')
     return render_template('AddCategory.html')
 
 
@@ -35,15 +35,53 @@ def create_new_item():
         itemDb.add_item(user_name, item_name, category,
                         location, purchase_date, tags)
         # TODO - comment this in when home page is available
-        return redirect('/home_page')
+        return redirect('/')
     elif request.method == 'GET':
         categories = categoryDb.get_categories(user_name)
         return render_template('AddItem.html', categories=categories)
 
 
-@app.route('/home_page', methods=('GET', 'POST'))
-def home_page():
-    return render_template("HomePage.html")
+@app.route("/", methods=['GET', 'POST'])
+def welcome():
+    msg = None
+    if (request.method == 'POST'):
+        if (request.form['username'] != "" and request.form['password'] != ""):
+            username = request.form["username"]
+            password = request.form["password"]
+            conn = sqlite3.connect("signup.db")
+            c = conn.cursor()
+            c.execute("INSERT INTO person VALUES('"+username+"','"+password+"')")
+            msg = "Your account is created"
+            conn.commit()
+            conn.close()
+        else:
+            msg = "Something went wrong"
+
+    return render_template("signup.html", msg=msg)
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    r = ""
+    msg = ""
+    # session.pop('logged_in' ,None)
+    if(request.method == "POST"):
+        username = request.form["username"]
+        password = request.form["password"]
+        conn = sqlite3.connect("signup.db")
+        c = conn.cursor()
+        c.execute("SELECT * FROM person WHERE username = '" +
+                  username+"'and password = '"+password+"'")
+        r = c.fetchall()
+        for i in r:
+            if (username == i[0] and password == i[1]):
+                session["loggedin"] = True
+                session["username"] = username
+                return redirect(url_for("about"))
+            else:
+                msg = "Please enter valid username and password"
+
+    return render_template("login.html", msg=msg)
 
 
 if __name__ == "__main__":
