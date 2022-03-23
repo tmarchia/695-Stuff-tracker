@@ -32,7 +32,7 @@ class CategoryDatabase:
                   'location': location})
         return response
 
-    def update_category_desc(self, user_name, category_name, new_location):
+    def update_category_loc(self, user_name, category_name, new_location):
         """ Method to update an existing category for a user """
         response = self.category_table.update_item(
             Key={'userName': user_name,
