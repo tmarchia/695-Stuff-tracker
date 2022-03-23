@@ -57,7 +57,7 @@ def welcome():
         else:
             msg = "Something went wrong"
 
-    return render_template("signup.html", msg=msg)
+    return render_template("Sign-up.html", msg=msg)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -81,7 +81,7 @@ def login():
             else:
                 msg = "Please enter valid username and password"
 
-    return render_template("login.html", msg=msg)
+    return render_template("Sign-in.html", msg=msg)
 
 
 if __name__ == "__main__":
