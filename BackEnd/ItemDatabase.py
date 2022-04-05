@@ -1,6 +1,7 @@
 """
 This class is to be used to access and modify the item DynamoDB database.
 """
+import os
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
 
@@ -12,10 +13,12 @@ class ItemDatabase:
         """ Initialize the connection to our item table """
         access_key_id = ''
         secret_access_key = ''
-        with open('/home/ec2-user/config/FixerKeys.txt') as key_file:
-            lines = key_file.readlines()
-            access_key_id = lines[0].split(':')[1].strip()
-            secret_access_key = lines[1].split(':')[1].strip()
+        key_file_path = '/home/ec2-user/config/FixerKeys.txt'
+        if(os.path.exists(key_file_path)):
+            with open(key_file_path) as key_file:
+                lines = key_file.readlines()
+                access_key_id = lines[0].split(':')[1].strip()
+                secret_access_key = lines[1].split(':')[1].strip()
 
         self.database = boto3.resource(
             'dynamodb',
