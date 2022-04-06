@@ -18,8 +18,8 @@ def create_new_category():
         category = request.form['AddArea']
         location = request.form['location']
         categoryDb.create_category(user_name, category, location)
-        # TODO - comment this in when home page is available
         return redirect('/home_page')
+
     return render_template('AddCategory.html')
 
 
@@ -34,8 +34,8 @@ def create_new_item():
         tags = request.form['tags']
         itemDb.add_item(user_name, item_name, category,
                         location, purchase_date, tags)
-        # TODO - comment this in when home page is available
         return redirect('/home_page')
+
     elif request.method == 'GET':
         categories = categoryDb.get_categories(user_name)
         return render_template('AddItem.html', categories=categories)
@@ -46,13 +46,15 @@ def delete_item():
     """ Function for the create new category webpage """
     item_name = request.form['item_name']
     itemDb.delete_item(user_name, item_name)
+
     return redirect(url_for("home_page"))
 
 
 @app.route("/signup", methods=['GET', 'POST'])
 def welcome():
+    """ Function for sign up """
     msg = None
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         if (request.form['username'] != "" and request.form['password'] != ""):
             username = request.form["username"]
             password = request.form["password"]
@@ -70,10 +72,11 @@ def welcome():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    """ Function for log up """
     r = ""
     msg = ""
     # session.pop('logged_in' ,None)
-    if(request.method == "POST"):
+    if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         conn = sqlite3.connect("signup.db")
@@ -94,6 +97,8 @@ def login():
 
 @app.route('/home_page', methods=('GET', 'POST'))
 def home_page():
+    """ Function for rendering homepage """
+
     return render_template("index.html")
 
 

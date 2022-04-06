@@ -14,7 +14,7 @@ class ItemDatabase:
         access_key_id = ''
         secret_access_key = ''
         key_file_path = '/home/ec2-user/config/FixerKeys.txt'
-        if(os.path.exists(key_file_path)):
+        if os.path.exists(key_file_path):
             with open(key_file_path) as key_file:
                 lines = key_file.readlines()
                 access_key_id = lines[0].split(':')[1].strip()
