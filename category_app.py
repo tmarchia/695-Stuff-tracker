@@ -8,7 +8,6 @@ from BackEnd import CategoryDatabase, ItemDatabase
 app = Flask(__name__)
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
-user_name = "test"  # TODO - figure out how to get user name
 
 
 @app.route('/create_category', methods=('GET', 'POST'))
@@ -17,7 +16,7 @@ def create_new_category():
     if request.method == 'POST':
         category = request.form['AddArea']
         location = request.form['location']
-        categoryDb.create_category(user_name, category, location)
+        categoryDb.create_category(session['username'], category, location)
         return redirect('/home_page')
 
     return render_template('AddCategory.html')
@@ -32,11 +31,11 @@ def create_new_item():
         location = request.form['location']
         purchase_date = request.form['purchase_date']
         tags = request.form['tags']
-        itemDb.add_item(user_name, item_name, category,
+        itemDb.add_item(session['username'], item_name, category,
                         location, purchase_date, tags)
         return redirect('/home_page')
 
-    categories = categoryDb.get_categories(user_name)
+    categories = categoryDb.get_categories(session['username'])
     return render_template('AddItem.html', categories=categories)
 
 
@@ -44,7 +43,7 @@ def create_new_item():
 def delete_item():
     """ Function for the create new category webpage """
     item_name = request.form['item_name']
-    itemDb.delete_item(user_name, item_name)
+    itemDb.delete_item(session['username'], item_name)
 
     return redirect(url_for("home_page"))
 
@@ -104,8 +103,16 @@ def all_items():
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
+    session['username'] = "test"
 
     return render_template("index.html")
+
+
+@app.route('/signout', methods=('GET', 'POST'))
+def signout():
+    """ Function for signing out """
+    session.pop('username')
+    return redirect("www.stevensfixerapp.com")
 
 
 if __name__ == "__main__":
