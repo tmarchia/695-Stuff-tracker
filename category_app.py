@@ -94,6 +94,13 @@ def login():
     return render_template("Sign-In.html", msg=msg)
 
 
+@app.route('/all_items', methods=('GET', 'POST'))
+def all_items():
+    """ Function for listing all items """
+
+    return render_template("All_Items.html")
+
+
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
