@@ -36,9 +36,8 @@ def create_new_item():
                         location, purchase_date, tags)
         return redirect('/home_page')
 
-    elif request.method == 'GET':
-        categories = categoryDb.get_categories(user_name)
-        return render_template('AddItem.html', categories=categories)
+    categories = categoryDb.get_categories(user_name)
+    return render_template('AddItem.html', categories=categories)
 
 
 @app.route('/delete_item', methods=('GET', 'POST'))
