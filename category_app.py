@@ -94,7 +94,7 @@ def login():
     return render_template("Sign-In.html", msg=msg)
 
 
-@app.route('/home_page', methods=('GET', 'POST'))
+@app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
 
