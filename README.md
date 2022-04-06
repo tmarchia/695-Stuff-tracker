@@ -1,7 +1,7 @@
 # 695-Stuff-tracker
 
 ## Unit Test Status:
-[![build status of databaseBackend](https://app.travis-ci.com/kunalsatija009/695-Stuff-tracker.svg?branch=databaseBackend)](https://app.travis-ci.com/kunalsatija009/695-Stuff-tracker)
+_TBD_
 
 ## Contributors:
 

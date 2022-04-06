@@ -25,7 +25,7 @@ def create_new_category():
 
 @app.route('/create_item', methods=('GET', 'POST'))
 def create_new_item():
-    """ Function for the create new category webpage """
+    """ Function for the create new item webpage """
     if request.method == 'POST':
         item_name = request.form['item_name']
         category = request.form['Select Category']
@@ -39,6 +39,14 @@ def create_new_item():
     elif request.method == 'GET':
         categories = categoryDb.get_categories(user_name)
         return render_template('AddItem.html', categories=categories)
+
+
+@app.route('/delete_item', methods=('GET', 'POST'))
+def delete_item():
+    """ Function for the create new category webpage """
+    item_name = request.form['item_name']
+    itemDb.delete_item(user_name, item_name)
+    return redirect(url_for("home_page"))
 
 
 @app.route("/signup", methods=['GET', 'POST'])
@@ -60,7 +68,7 @@ def welcome():
     return render_template("Sign-up.html", msg=msg)
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     r = ""
     msg = ""

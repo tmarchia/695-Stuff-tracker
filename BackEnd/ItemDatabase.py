@@ -59,10 +59,25 @@ class ItemDatabase:
                  'itemName': item_name})
         return response
 
+    def get_all_items(self, user_name):
+        """ Method to get all items for a particular category """
+        response = self.item_table.query(
+            KeyConditionExpression=Key('userName').eq(user_name))
+
+        return response['Items']
+
     def get_items_by_category(self, user_name, category):
         """ Method to get all items for a particular category """
         response = self.item_table.query(
             KeyConditionExpression=Key('userName').eq(user_name),
             FilterExpression=Attr('category').eq(category))
+
+        return response['Items']
+
+    def get_item_by_name(self, user_name, item_name):
+        """ Method to get all items for a particular category """
+        response = self.item_table.query(
+            KeyConditionExpression=Key('userName').eq(user_name),
+            FilterExpression=Attr('itemName').eq(item_name))
 
         return response['Items']
