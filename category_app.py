@@ -2,6 +2,8 @@
 This Script is to implement our flask methods to connect to our front end
 """
 import os
+import requests
+import jsons
 from flask import Flask, request, render_template, redirect, session, url_for
 from BackEnd import CategoryDatabase, ItemDatabase
 
@@ -132,10 +134,32 @@ def single_item(item_name):
 def home_page():
     """ Function for rendering homepage """
     code = request.args.get('code')
-    print(code)
-    session['username'] = "test"
+    session['username'] = get_user_name(code)
+    print(session['username'])
 
     return render_template("index.html")
+
+
+def get_user_name(code):
+    # Get access token
+    url = 'https://fixerapp.auth.us-east-1.amazoncognito.com/oauth2/token'
+    headers = {'Accept-Encoding': 'gzip, deflate',
+               'Content-Type': 'application/x-www-form-urlencoded'}
+    data = {'grant_type': 'authorization_code', 'code': code,
+            'redirect_uri': 'https://34.234.78.87:5000/home_page/', 'client_id': '2ugh0ft9kuhn66qqhlvb7952f4'}
+
+    res = requests.post(url, data=data, headers=headers)
+    access_token = json.loads(res.text)['access_token']
+
+    # Get user name
+    url = 'https://fixerapp.auth.us-east-1.amazoncognito.com/oauth2/userInfo'
+    headers = {'Authorization': 'Bearer '+access_token}
+    data = {}
+
+    res = requests.get(url, data=data, headers=headers)
+    username = json.loads(res.text)['username']
+
+    return username
 
 
 @app.route('/signout', methods=('GET', 'POST'))
