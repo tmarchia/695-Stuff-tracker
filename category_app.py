@@ -119,6 +119,16 @@ def all_items():
     return redirect('/signout')
 
 
+@app.route('/single_item/<item_name>', methods=('GET', 'POST'))
+def single_item(item_name):
+    """ Function for listing all items """
+    if session.get('username'):
+        item = itemDb.get_item_by_name(session['username'], item_name)
+        return render_template("Single_Item.html", item=item)
+
+    return redirect('/signout')
+
+
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
