@@ -123,9 +123,7 @@ def single_item(item_name):
     """ Function for listing a single items """
     if session.get('username'):
         item = itemDb.get_item_by_name(session['username'], item_name)
-        print(item)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        return render_template("Single_Item.html", item=item)
+        return render_template("Single_Item.html", item=item[0])
 
     return redirect('/signout')
 
