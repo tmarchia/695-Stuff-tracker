@@ -128,10 +128,10 @@ def single_item(item_name):
     return redirect('/signout')
 
 
-@app.route('/home_page/<code>', methods=('GET', 'POST'))
-def home_page(code):
+@app.route('/home_page/', methods=('GET', 'POST'))
+def home_page():  # code):
     """ Function for rendering homepage """
-    print(code)
+    # print(code)
     session['username'] = "test"
 
     return render_template("index.html")
