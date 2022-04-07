@@ -137,7 +137,7 @@ def home_page():
     session['username'] = get_user_name(code)
     print(session['username'])
 
-    return render_template("index.html")
+    return render_template("index.html", username=session['username'])
 
 
 def get_user_name(code):
