@@ -4,8 +4,8 @@
 		<title>Fixer</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="static/styles/main.css" />
-		<noscript><link rel="stylesheet" href="static/styles/noscript.css" /></noscript>
+		<link rel="stylesheet" href="../static/styles/main.css" />
+		<noscript><link rel="stylesheet" href="../static/styles/noscript.css" /></noscript>
 	</head>
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
@@ -28,8 +28,8 @@
 								<li><a href="{{ url_for('home_page') }}">Home</a></li>
 								<li><a href="{{ url_for('create_new_item') }}">Add Item</a></li>
 								<li><a href="{{ url_for('create_new_category') }}">Add Category</a></li>
-								<li><a href="All_Items.html">All Items</a></li>
-								<li><a href="All_Items.html">Sign Out</a></li>
+								<li><a href="{{ url_for('all_items') }}">All Items</a></li>
+								<li><a href="{{ url_for('signout') }}">Sign Out[{{username}}]</a></li>
 							</ul>
 						</nav>
 
@@ -39,67 +39,15 @@
 				<section class="carousel">
 					<div class="reel">
 
+						{% for item in items %}
 						<article>
 							<a href="Single_Item.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
 							<header>
-								<h3><a href="#">Item Name</a></h3>
+								<h3><a href="{{ url_for('single_item', item_name=item["itemName"]) }}">{{item["itemName"]}}</a></h3>
 							</header>
 						</article>
+						{% endfor %}
 
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
-
-						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-							<header>
-								<h3><a href="#">Item Name</a></h3>
-							</header>
-						</article>
 					</div>
 				</section>
 					</div>
@@ -108,14 +56,14 @@
 		</div>
 
 		<!-- Scripts -->
-		<script src="static/js/jquery.min.js"></script>
-		<script src="static/js/jquery.dropotron.min.js"></script>
-		<script src="static/js/jquery.scrolly.min.js"></script>
-		<script src="static/js/jquery.scrollex.min.js"></script>
-		<script src="static/js/browser.min.js"></script>
-		<script src="static/js/breakpoints.min.js"></script>
-		<script src="static/js/util.js"></script>
-		<script src="static/js/main.js"></script>
+		<script src="../static/js/jquery.min.js"></script>
+		<script src="../static/js/jquery.dropotron.min.js"></script>
+		<script src="../static/js/jquery.scrolly.min.js"></script>
+		<script src="../static/js/jquery.scrollex.min.js"></script>
+		<script src="../static/js/browser.min.js"></script>
+		<script src="../static/js/breakpoints.min.js"></script>
+		<script src="../static/js/util.js"></script>
+		<script src="../static/js/main.js"></script>
 
 	</body>
 </html>
