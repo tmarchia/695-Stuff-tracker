@@ -78,6 +78,6 @@ class ItemDatabase:
         """ Method to get all items for a particular category """
         response = self.item_table.query(
             KeyConditionExpression=Key('userName').eq(user_name),
-            FilterExpression=Attr('itemName').eq(item_name))
+            KeyConditionExpression=Attr('itemName').eq(item_name))
 
         return response['Items']
