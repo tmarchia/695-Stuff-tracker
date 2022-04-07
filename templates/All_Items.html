@@ -39,10 +39,10 @@
                 <header>
                     <h3><a href="#">{{item["itemName"]}}</a></h3>
                 </header>
-                <p>{{item["category"]}}</p>
-								<p>{{item["location"]}}</p>
-								<p>{{item["purchase_date"]}}</p>
-								<p>{{item["tags"]}}</p>
+                <p>Category:     {{item["category"]}}</p>
+								<p>Location:     {{item["location"]}}</p>
+								<p>Puchase Date: {{item["purchase_date"]}}</p>
+								<p>Tags: {{ ", " if not item["tags"].last else ""}}</p>
             </article>
 						{% endfor %}
         </div>
