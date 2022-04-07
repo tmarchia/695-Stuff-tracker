@@ -157,7 +157,7 @@ def get_user_name(code):
     data = {}
 
     res = requests.get(url, data=data, headers=headers)
-    username = json.loads(res.text)['username']
+    username = jsons.loads(res.text)['username']
 
     return username
 
