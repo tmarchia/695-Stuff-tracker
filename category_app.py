@@ -121,12 +121,9 @@ def all_items():
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
-    if session.get('username'):
-        session['username'] = "test"
+    session['username'] = "test"
 
-        return render_template("index.html")
-
-    return redirect('/signout')
+    return render_template("index.html")
 
 
 @app.route('/signout', methods=('GET', 'POST'))
