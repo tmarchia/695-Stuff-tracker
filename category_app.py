@@ -121,7 +121,7 @@ def all_items():
 
 
 @app.route('/single_item/<item_name>', methods=('GET', 'POST'))
-def single_item(item_name, item_category):
+def single_item(item_name):
     """ Function for listing a single items """
     if session.get('username'):
         item = itemDb.get_item_by_name(session['username'], item_name)
@@ -139,7 +139,9 @@ def home_page():
         code = request.args.get('code')
         session['username'] = get_user_name(code)
 
-    return render_template("index.html", username=session['username'])
+    items = itemDb.get_all_items(session['username'])
+
+    return render_template("index.html", username=session['username'], items=items)
 
 
 def get_user_name(code):
