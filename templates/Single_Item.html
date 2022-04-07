@@ -28,6 +28,7 @@
 			<div class="container">
 				<div class="row gtr-200">
 					<div class="col-8 col-12-mobile" id="content">
+						{% if item %}
 						<article id="main">
 							<header>
 								<h2><a href="#">{{item["itemName"]}}</a></h2>
@@ -36,13 +37,16 @@
 							</header>
 							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
 						</article>
+						{% endif%}
 					</div>
 					<div class="col-4 col-12-mobile" id="sidebar">
 						<hr class="first" />
+						{% if item %}
 						<section>
 							<h3>Tags</h3> <p>{{item["tags"]|join("#, ")}}</p>
 							<p>Puchase Date: {{item["purchase_date"]}}</p>
 						</section>
+						{% endif%}
 						<hr />
 						<style>
 							.dropdown-content {
@@ -56,7 +60,7 @@
 							<button class="red" type="button">Perform Actions</button>
 							<div class="dropdown-content">
 								<a href="#">Update Item</a>
-								<a href="{{ url_for('delete_item', item=item["itemName"])}}">Remove Item</a>
+								<a href="{{ url_for('delete_item', item_name=item["itemName"])}}">Remove Item</a>
 							</div>
 						</div>
 					</div>
