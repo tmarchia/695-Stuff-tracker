@@ -54,6 +54,27 @@ def create_new_item():
     return redirect('/signout')
 
 
+@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
+def update_item(item_name):
+    """ Function for the create new item webpage """
+    if session.get('username'):
+        if request.method == 'POST':
+            item_name = request.form['item_name']
+            category = request.form['Select Category']
+            location = request.form['location']
+            purchase_date = request.form['purchase_date']
+            tags = request.form['tags']
+            itemDb.add_item(session['username'], item_name, category,
+                            location, purchase_date, tags)
+            return redirect('/home_page')
+
+        item = itemDb.get_item_by_name(session['username'], item_name)
+        categories = categoryDb.get_categories(session['username'])
+        return render_template('UpdateItem.html', categories=categories, item=item[0])
+
+    return redirect('/signout')
+
+
 @app.route('/delete_item/<item_name>', methods=('GET', 'POST'))
 def delete_item(item_name):
     """ Function for the deleting an item """
@@ -63,51 +84,6 @@ def delete_item(item_name):
         return redirect(url_for("home_page"))
 
     return redirect('/signout')
-
-
-@app.route("/signup", methods=['GET', 'POST'])
-def welcome():
-    """ Function for sign up """
-    msg = None
-    if request.method == 'POST':
-        if (request.form['username'] != "" and request.form['password'] != ""):
-            username = request.form["username"]
-            password = request.form["password"]
-            conn = sqlite3.connect("signup.db")
-            c = conn.cursor()
-            c.execute("INSERT INTO person VALUES('"+username+"','"+password+"')")
-            msg = "Your account is created"
-            conn.commit()
-            conn.close()
-        else:
-            msg = "Something went wrong"
-
-    return render_template("Sign-up.html", msg=msg)
-
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    """ Function for log up """
-    r = ""
-    msg = ""
-    # session.pop('logged_in' ,None)
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        conn = sqlite3.connect("signup.db")
-        c = conn.cursor()
-        c.execute("SELECT * FROM person WHERE username = '" +
-                  username+"'and password = '"+password+"'")
-        r = c.fetchall()
-        for i in r:
-            if (username == i[0] and password == i[1]):
-                session["loggedin"] = True
-                session["username"] = username
-                return redirect(url_for("about"))
-            else:
-                msg = "Please enter valid username and password"
-
-    return render_template("Sign-In.html", msg=msg)
 
 
 @app.route('/all_items', methods=('GET', 'POST'))
@@ -144,6 +120,15 @@ def home_page():
     return render_template("index.html", username=session['username'], items=items)
 
 
+@app.route('/signout', methods=('GET', 'POST'))
+def signout():
+    """ Function for signing out """
+    if session.get('username'):
+        session.pop('username')
+
+    return redirect("www.stevensfixerapp.com")
+
+
 def get_user_name(code):
     # Get access token
     url = 'https://fixerapp.auth.us-east-1.amazoncognito.com/oauth2/token'
@@ -164,15 +149,6 @@ def get_user_name(code):
     username = jsons.loads(res.text)['username']
 
     return username
-
-
-@app.route('/signout', methods=('GET', 'POST'))
-def signout():
-    """ Function for signing out """
-    if session.get('username'):
-        session.pop('username')
-
-    return redirect("www.stevensfixerapp.com")
 
 
 if __name__ == "__main__":
