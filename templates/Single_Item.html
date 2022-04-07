@@ -66,36 +66,16 @@
 
 				<h3 style="margin-bottom: 30px;">Related Items You Own</h3>
 				<div class="row">
+					{% for item in related_items %}
 					<article class="col-4 col-12-mobile special">
 						<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
 						<header>
-							<h3><a href="#">Gravida aliquam penatibus</a></h3>
+							<h3><a href="{{ url_for('single_item', item_name=item["itemName"], item_category=item["category"]) }}">{{item["itemName"]}}</a></h3>
 						</header>
-						<p>
-							Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
-							porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
-						</p>
+						<p>Category:     {{item["category"]}}</p>
+						<p>Location:     {{item["location"]}}</p>
 					</article>
-					<article class="col-4 col-12-mobile special">
-						<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-						<header>
-							<h3><a href="#">Sed quis rhoncus placerat</a></h3>
-						</header>
-						<p>
-							Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
-							porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
-						</p>
-					</article>
-					<article class="col-4 col-12-mobile special">
-						<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-						<header>
-							<h3><a href="#">Magna laoreet et aliquam</a></h3>
-						</header>
-						<p>
-							Amet nullam fringilla nibh nulla convallis tique ante proin sociis accumsan lobortis. Auctor etiam
-							porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum consequat integer interdum.
-						</p>
-					</article>
+					{% endfor %}
 				</div>
 			</div>
 

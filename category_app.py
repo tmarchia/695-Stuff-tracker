@@ -121,11 +121,13 @@ def all_items():
 
 
 @app.route('/single_item/<item_name>', methods=('GET', 'POST'))
-def single_item(item_name):
+def single_item(item_name, item_category):
     """ Function for listing a single items """
     if session.get('username'):
         item = itemDb.get_item_by_name(session['username'], item_name)
-        return render_template("Single_Item.html", item=item[0])
+        related_items = itemDb.get_items_by_category(
+            session['username'], item[0]['category'])
+        return render_template("Single_Item.html", item=item[0], related_items=related_items)
 
     return redirect('/signout')
 
