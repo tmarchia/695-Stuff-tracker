@@ -30,10 +30,9 @@
 					<div class="col-8 col-12-mobile" id="content">
 						<article id="main">
 							<header>
-								<h2><a href="#">#TITLE</a></h2>
-								<p>
-									Main category / Sub Category
-								</p>
+								<h2><a href="#">{{item["itemName"]}}</a></h2>
+								<p>Category:     {{item["category"]}}</p>
+								<p>Location:     {{item["location"]}}</p>
 							</header>
 							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
 						</article>
@@ -41,8 +40,8 @@
 					<div class="col-4 col-12-mobile" id="sidebar">
 						<hr class="first" />
 						<section>
-							<h3>Tags</h3> <p>#Dolor #sed #fringilla #nibh #nulla</p>
-							<p>Description Here....</p>
+							<h3>Tags</h3> <p>{{item["tags"]|join("#, ")}}</p>
+							<p>Puchase Date: {{item["purchase_date"]}}</p>
 						</section>
 						<hr />
 						<style>
@@ -57,9 +56,7 @@
 							<button class="red" type="button">Perform Actions</button>
 							<div class="dropdown-content">
 								<a href="#">Update Item</a>
-								<a href="#">Remove Item</a>
-								<a href="#">Sell Item</a>
-								<a href="#">Donate Item</a>
+								<a href="{{ url_for('delete_item')}}">Remove Item</a>
 							</div>
 						</div>
 					</div>
