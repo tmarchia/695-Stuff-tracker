@@ -52,7 +52,7 @@ def create_new_item():
     return redirect('/signout')
 
 
-@app.route('/delete_item', methods=('GET', 'POST'))
+@app.route('/delete_item/<item_name>', methods=('GET', 'POST'))
 def delete_item(item_name):
     """ Function for the deleting an item """
     if session.get('username'):
@@ -128,7 +128,7 @@ def single_item(item_name):
     return redirect('/signout')
 
 
-@app.route('/home_page/', methods=('GET', 'POST'))
+@app.route('/home_page/<code>', methods=('GET', 'POST'))
 def home_page(code):
     """ Function for rendering homepage """
     print(code)
