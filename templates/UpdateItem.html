@@ -41,7 +41,7 @@
 				<label> <input type="text" name="item_name" value="{{item["itemName"]}}"/> </label>
 				<label> <input type="file" id="img" name="img" accept="image/*"> </label>
 				<select name = "Select Category">
-					<option value = "{{item["category"]}}" enable selected>Select Category</option>
+					<option value = "{{item["category"]}}" enable selected>{{item["category"]}}</option>
 					{% for cat in categories %}
 					<option value = "{{cat["categoryName"]}}">{{cat["categoryName"]}}</option>
 					{% endfor %}
