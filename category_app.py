@@ -129,8 +129,9 @@ def single_item(item_name):
 
 
 @app.route('/home_page/', methods=('GET', 'POST'))
-def home_page():
+def home_page(code):
     """ Function for rendering homepage """
+    print(code)
     session['username'] = "test"
 
     return render_template("index.html")
