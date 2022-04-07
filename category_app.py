@@ -113,7 +113,8 @@ def login():
 def all_items():
     """ Function for listing all items """
     if session.get('username'):
-        return render_template("All_Items.html")
+        items = itemDb.get_all_items(session['username'])
+        return render_template("All_Items.html", items=items)
 
     return redirect('/signout')
 
