@@ -1,11 +1,18 @@
 """
 This Script is to implement our flask methods to connect to our front end
 """
-
+import os
 from flask import Flask, request, render_template, redirect, session, url_for
 from BackEnd import CategoryDatabase, ItemDatabase
 
 app = Flask(__name__)
+key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
+if os.path.exists(key_file_path):
+    with open(key_file_path) as key_file:
+        lines = key_file.readlines()
+        secret_key = lines[0]
+app.secret_key = secret_key
+
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
 
@@ -13,39 +20,48 @@ itemDb = ItemDatabase.ItemDatabase()
 @app.route('/create_category', methods=('GET', 'POST'))
 def create_new_category():
     """ Function for the create new category webpage """
-    if request.method == 'POST':
-        category = request.form['AddArea']
-        location = request.form['location']
-        categoryDb.create_category(session['username'], category, location)
-        return redirect('/home_page')
+    if session.get('username'):
+        if request.method == 'POST':
+            category = request.form['AddArea']
+            location = request.form['location']
+            categoryDb.create_category(session['username'], category, location)
+            return redirect('/home_page')
 
-    return render_template('AddCategory.html')
+        return render_template('AddCategory.html')
+
+    return redirect('/signout')
 
 
 @app.route('/create_item', methods=('GET', 'POST'))
 def create_new_item():
     """ Function for the create new item webpage """
-    if request.method == 'POST':
-        item_name = request.form['item_name']
-        category = request.form['Select Category']
-        location = request.form['location']
-        purchase_date = request.form['purchase_date']
-        tags = request.form['tags']
-        itemDb.add_item(session['username'], item_name, category,
-                        location, purchase_date, tags)
-        return redirect('/home_page')
+    if session.get('username'):
+        if request.method == 'POST':
+            item_name = request.form['item_name']
+            category = request.form['Select Category']
+            location = request.form['location']
+            purchase_date = request.form['purchase_date']
+            tags = request.form['tags']
+            itemDb.add_item(session['username'], item_name, category,
+                            location, purchase_date, tags)
+            return redirect('/home_page')
 
-    categories = categoryDb.get_categories(session['username'])
-    return render_template('AddItem.html', categories=categories)
+        categories = categoryDb.get_categories(session['username'])
+        return render_template('AddItem.html', categories=categories)
+
+    return redirect('/signout')
 
 
 @app.route('/delete_item', methods=('GET', 'POST'))
 def delete_item():
     """ Function for the create new category webpage """
-    item_name = request.form['item_name']
-    itemDb.delete_item(session['username'], item_name)
+    if session.get('username'):
+        item_name = request.form['item_name']
+        itemDb.delete_item(session['username'], item_name)
 
-    return redirect(url_for("home_page"))
+        return redirect(url_for("home_page"))
+
+    return redirect('/signout')
 
 
 @app.route("/signup", methods=['GET', 'POST'])
@@ -96,22 +112,29 @@ def login():
 @app.route('/all_items', methods=('GET', 'POST'))
 def all_items():
     """ Function for listing all items """
+    if session.get('username'):
+        return render_template("All_Items.html")
 
-    return render_template("All_Items.html")
+    return redirect('/signout')
 
 
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
-    session['username'] = "test"
+    if session.get('username'):
+        session['username'] = "test"
 
-    return render_template("index.html")
+        return render_template("index.html")
+
+    return redirect('/signout')
 
 
 @app.route('/signout', methods=('GET', 'POST'))
 def signout():
     """ Function for signing out """
-    session.pop('username')
+    if session.get('username'):
+        session.pop('username')
+
     return redirect("www.stevensfixerapp.com")
 
 
