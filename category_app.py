@@ -133,9 +133,9 @@ def single_item(item_name):
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
-    code = request.args.get('code')
-    session['username'] = get_user_name(code)
-    print(session['username'])
+    if not session.get('username'):
+        code = request.args.get('code')
+        session['username'] = get_user_name(code)
 
     return render_template("index.html", username=session['username'])
 
