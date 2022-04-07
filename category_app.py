@@ -53,10 +53,9 @@ def create_new_item():
 
 
 @app.route('/delete_item', methods=('GET', 'POST'))
-def delete_item():
-    """ Function for the create new category webpage """
+def delete_item(item_name):
+    """ Function for the deleting an item """
     if session.get('username'):
-        item_name = request.form['item_name']
         itemDb.delete_item(session['username'], item_name)
 
         return redirect(url_for("home_page"))
@@ -121,9 +120,11 @@ def all_items():
 
 @app.route('/single_item/<item_name>', methods=('GET', 'POST'))
 def single_item(item_name):
-    """ Function for listing all items """
+    """ Function for listing a single items """
     if session.get('username'):
         item = itemDb.get_item_by_name(session['username'], item_name)
+        print(item)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         return render_template("Single_Item.html", item=item)
 
     return redirect('/signout')
