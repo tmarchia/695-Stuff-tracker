@@ -135,7 +135,7 @@ def get_user_name(code):
     headers = {'Accept-Encoding': 'gzip, deflate',
                'Content-Type': 'application/x-www-form-urlencoded'}
     data = {'grant_type': 'authorization_code', 'code': code,
-            'redirect_uri': 'https://34.234.78.87:5000/home_page/', 'client_id': '2ugh0ft9kuhn66qqhlvb7952f4'}
+            'redirect_uri': 'https://app.stevensfixerapp.com:5000/home_page/', 'client_id': '2ugh0ft9kuhn66qqhlvb7952f4'}
 
     res = requests.post(url, data=data, headers=headers)
     access_token = jsons.loads(res.text)['access_token']
