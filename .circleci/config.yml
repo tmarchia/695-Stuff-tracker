@@ -16,6 +16,7 @@ jobs:
       - checkout
       - run:
           name: install dependencies
+          command: sudo apt install python3-pip
           command: pip3 install boto3
       - run:
           name: "Run python tests"
