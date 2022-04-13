@@ -14,8 +14,6 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
       - run:
           name: install dependencies
           command: pip3 install boto3
