@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: "Run python tests"
-           command: python3 -m unittest CategoryDatabaseUT.py
+          command: python3 -m unittest CategoryDatabaseUT.py
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
