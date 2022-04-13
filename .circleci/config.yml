@@ -17,8 +17,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            sudo apt install python3-pip
-            pip3 install boto3
+            pip install boto3
       - run:
           name: "Run python tests"
           command: python3 -m unittest CategoryDatabaseUT.py
