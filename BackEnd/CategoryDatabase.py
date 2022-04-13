@@ -1,6 +1,7 @@
 """
 This class is to be used to access and modify the category DynamoDB database.
 """
+import os
 import boto3
 from boto3.dynamodb.conditions import Key
 
@@ -12,10 +13,12 @@ class CategoryDatabase:
         """ Initialize the connection to our category table """
         access_key_id = ''
         secret_access_key = ''
-        with open('/home/ec2-user/config/FixerKeys.txt') as key_file:
-            lines = key_file.readlines()
-            access_key_id = lines[0].split(':')[1].strip()
-            secret_access_key = lines[1].split(':')[1].strip()
+        key_file_path = '/home/ec2-user/config/FixerKeys.txt'
+        if os.path.exists(key_file_path):
+            with open(key_file_path) as key_file:
+                lines = key_file.readlines()
+                access_key_id = lines[0].split(':')[1].strip()
+                secret_access_key = lines[1].split(':')[1].strip()
 
         self.database = boto3.resource(
             'dynamodb',
@@ -29,7 +32,7 @@ class CategoryDatabase:
         response = self.category_table.put_item(
             Item={'userName': user_name,
                   'categoryName': category_name,
-                  'location': location})
+                  'categoryLocation': location})
         return response
 
     def update_category_loc(self, user_name, category_name, new_location):
@@ -37,7 +40,7 @@ class CategoryDatabase:
         response = self.category_table.update_item(
             Key={'userName': user_name,
                  'categoryName': category_name},
-            UpdateExpression="set location = :loc",
+            UpdateExpression="set categoryLocation = :loc",
             ExpressionAttributeValues={
                 ':loc': new_location},
             ReturnValues="UPDATED_NEW")
@@ -46,7 +49,7 @@ class CategoryDatabase:
 
     def delete_category(self, user_name, category_name):
         """ Method to delete an existing category """
-        response = self.category_table.delete_item(
+        self.category_table.delete_item(
             Key={'userName': user_name,
                  'categoryName': category_name})
 

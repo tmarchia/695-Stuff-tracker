@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Sign In</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/styles/main.css" />
+		<noscript><link rel="stylesheet" href="static/styles/noscript.css" /></noscript>
+	</head>
+	<body class="no-sidebar is-preload" style="padding-top: 5%; padding-bottom: 5%;">
+		<div id="page-wrapper">
+
+			<!-- Main -->`
+				<p style="text-align:center;"><a href="#"><img style="width:15%;" src="images/logo.png" alt="" /></a></p>
+
+			<form>
+				<label> <input type="text" placeholder="User Name"/> </label>
+				<label> <input type="password" placeholder="Password"/> </label>
+				<button class="red" type="button"><a href="{{ url_for('home_page') }}"><i class="icon ion-md-lock"></i>Sign In</a></button>
+				<div class="copyright">
+					<ul class="menu" style="margin: 5%;">
+						<li><a href="Forgot-Password.html">Reset Password</a></li><li><a href="{{ url_for('welcome') }}">Sign-Up</a></li>
+					</ul>
+				</div>
+
+			</form>
+
+			<!-- Footer -->
+
+		<!-- Scripts -->
+			<script src="static/js/jquery.min.js"></script>
+			<script src="static/js/jquery.dropotron.min.js"></script>
+			<script src="static/js/jquery.scrolly.min.js"></script>
+			<script src="static/js/jquery.scrollex.min.js"></script>
+			<script src="static/js/browser.min.js"></script>
+			<script src="static/js/breakpoints.min.js"></script>
+			<script src="static/js/util.js"></script>
+			<script src="static/js/main.js"></script>
+	</body>
+</html>

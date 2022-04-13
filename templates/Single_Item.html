@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Add Item</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../static/styles/main.css" />
+		<noscript><link rel="stylesheet" href="../static/styles/noscript.css" /></noscript>
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+			<!-- Header -->
+			<div id="header">
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li><a href="{{ url_for('home_page') }}">Home</a></li>
+						<li><a href="{{ url_for('create_new_item') }}">Add Item</a></li>
+						<li><a href="{{ url_for('create_new_category') }}">Add Category</a></li>
+						<li><a href="{{ url_for('all_items') }}">All Items</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div class="wrapper style1">
+
+			<div class="container">
+				<div class="row gtr-200">
+					<div class="col-8 col-12-mobile" id="content">
+						<article id="main">
+							<header>
+								<h2><a href="#">{{item["itemName"]}}</a></h2>
+								<p>Category:     {{item["category"]}}</p>
+								<p>Location:     {{item["location"]}}</p>
+							</header>
+							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+						</article>
+					</div>
+					<div class="col-4 col-12-mobile" id="sidebar">
+						<hr class="first" />
+						<section>
+							<h3>Tags</h3> <p>{{item["tags"]|join(", ")}}</p>
+							<p>Puchase Date: {{item["purchase_date"]}}</p>
+						</section>
+						<hr />
+						<style>
+							.dropdown-content {
+							  display: none; position: absolute; background-color: #f1f1f1;  min-width: 350px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;
+							}
+							.dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block;
+							}
+							.dropdown:hover .dropdown-content {display: block;}
+						</style>
+						<div class="dropdown">
+							<button class="red" type="button">Perform Actions</button>
+							<div class="dropdown-content">
+								<a href="{{ url_for('update_item', item_name=item["itemName"])}}">Update Item</a>
+								<a href="{{ url_for('delete_item', item_name=item["itemName"])}}">Remove Item</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<hr />
+
+				<h3 style="margin-bottom: 30px;">Related Items You Own</h3>
+				<div class="row">
+					{% for item in related_items %}
+					<article class="col-4 col-12-mobile special">
+						<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+						<header>
+							<h3><a href="{{ url_for('single_item', item_name=item["itemName"], item_category=item["category"]) }}">{{item["itemName"]}}</a></h3>
+						</header>
+						<p>Category:     {{item["category"]}}</p>
+						<p>Location:     {{item["location"]}}</p>
+					</article>
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+		<!-- Scripts -->
+			<script src="../static/js/jquery.min.js"></script>
+			<script src="../static/js/jquery.dropotron.min.js"></script>
+			<script src="../static/js/jquery.scrolly.min.js"></script>
+			<script src="../static/js/jquery.scrollex.min.js"></script>
+			<script src="../static/js/browser.min.js"></script>
+			<script src="../static/js/breakpoints.min.js"></script>
+			<script src="../static/js/util.js"></script>
+			<script src="../static/js/main.js"></script>
+
+	</body>
+</html>
