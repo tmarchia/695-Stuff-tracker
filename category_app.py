@@ -8,6 +8,7 @@ from flask import Flask, request, render_template, redirect, session, url_for
 from BackEnd import CategoryDatabase, ItemDatabase
 
 app = Flask(__name__)
+secret_key = ""
 key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
 if os.path.exists(key_file_path):
     with open(key_file_path) as key_file:

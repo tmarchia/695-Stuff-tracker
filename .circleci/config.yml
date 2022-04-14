@@ -19,7 +19,7 @@ jobs:
           command: |
             pip install boto3
       - run:
-          name: "Run python tests"
+          name: "Run Python Unit Tests"
           command: |
             python3 -m unittest CategoryDatabaseUT.py
             python3 -m unittest ItemDatabaseUT.py
