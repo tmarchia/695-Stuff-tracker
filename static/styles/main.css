@@ -2136,7 +2136,7 @@ input::-moz-focus-inner {
 
 	#header {
 		position: relative;
-		background-image: url("../../images/header.jpg");
+		background-color: #9e8785;
 		background-size: cover;
 		background-position: center center;
 		background-attachment: fixed;
