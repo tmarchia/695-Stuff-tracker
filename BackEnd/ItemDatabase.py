@@ -29,7 +29,7 @@ class ItemDatabase:
 
     def add_item(self, user_name, item_name, category, location, purchase_date, tags):
         """ Method to create a new item for a user """
-        tags_list = tags.split(',')
+        tags_list = tags.replace(' ', '').split(',')
         tags_list_search = [item.lower() for item in tags_list]
         response = self.item_table.put_item(
             Item={'userName': user_name,
@@ -95,8 +95,12 @@ class ItemDatabase:
             Attr('location_search').eq(search_word) |
             Attr('tags_search').contains(search_word))
 
-        response += self.item_table.query(
+        items = response['Items']
+
+        response = self.item_table.query(
             KeyConditionExpression=Key('userName').eq(
                 user_name) & Key('itemName').eq(search_word))
 
-        return response['Items']
+        items += response['Items']
+
+        return items
