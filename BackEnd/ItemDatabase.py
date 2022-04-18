@@ -97,8 +97,6 @@ class ItemDatabase:
 
         response += self.item_table.query(
             KeyConditionExpression=Key('userName').eq(
-                user_name) & Key('itemName').eq(search_word)
-
-        print("Found " + str(len(response['Items'])) + " items")
+                user_name) & Key('itemName').eq(search_word))
 
         return response['Items']
