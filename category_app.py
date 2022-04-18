@@ -108,9 +108,8 @@ def single_item(item_name):
     return redirect('/signout')
 
 
-@app.route('/search_items', methods=('GET', 'POST'))
+@app.route('/search_items/<search_word>', methods=('GET', 'POST'))
 def search_items(search_word):
-    print("Search itemsssssssss = " + search_word)
     """ Function for search items """
     if session.get('username'):
         items = itemDb.search_items(
@@ -133,7 +132,7 @@ def home_page():
 
     elif request.method == 'POST':
         search_word = request.form['search_word']
-        return search_items(search_word)
+        return redirect(url_for('search_items', search_word=search_word))
 
 
 @app.route('/signout', methods=('GET', 'POST'))
