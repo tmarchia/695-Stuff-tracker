@@ -110,6 +110,7 @@ def single_item(item_name):
 
 @app.route('/search_items', methods=('GET', 'POST'))
 def search_items(search_word):
+    print("Search itemsssssssss = " + search_word)
     """ Function for search items """
     if session.get('username'):
         items = itemDb.search_items(

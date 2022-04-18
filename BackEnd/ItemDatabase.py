@@ -87,7 +87,6 @@ class ItemDatabase:
         return response['Items']
 
     def search_items(self, user_name, search_word):
-        print("Searching for word: " + search_word)
         """ Method to get all items matching search word """
         response = self.item_table.query(
             KeyConditionExpression=Key('userName').eq(
