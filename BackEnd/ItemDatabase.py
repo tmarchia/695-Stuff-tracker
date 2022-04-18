@@ -97,6 +97,6 @@ class ItemDatabase:
             Attr('location_search').eq(search_word) |
             Attr('tags_search').contains(search_word))
 
-        print("Found " + response['Items'].size() + " items")
+        print("Found " + response['Items'] + " items")
 
         return response['Items']
