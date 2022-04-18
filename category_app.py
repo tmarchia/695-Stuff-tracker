@@ -118,9 +118,12 @@ def home_page():
     if request.method == 'GET':
         items = itemDb.get_all_items(session['username'])
         return render_template("index.html", username=session['username'], items=items)
+
     elif request.method == 'POST':
         search_word = request.form['search_word']
-        return render_template("search.html")
+        items = itemDb.search_items(
+            session['username'], search_word.lower())
+        return render_template("search.html", items=items)
 
 
 @app.route('/signout', methods=('GET', 'POST'))

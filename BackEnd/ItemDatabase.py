@@ -30,13 +30,18 @@ class ItemDatabase:
     def add_item(self, user_name, item_name, category, location, purchase_date, tags):
         """ Method to create a new item for a user """
         tags_list = tags.split(',')
+        tags_list_search = [item.lower() for item in tags_list]
         response = self.item_table.put_item(
             Item={'userName': user_name,
                   'itemName': item_name,
+                  'itemName_search': item_name.lower(),
                   'category': category,
+                  'category_search': category.lower(),
                   'location': location,
+                  'location_search': location.lower(),
                   'purchase_date': purchase_date,
-                  'tags': tags_list})
+                  'tags': tags_list,
+                  'tags_search': tags_list_search})
 
         return response
 
@@ -78,5 +83,18 @@ class ItemDatabase:
         """ Method to get all items for a particular category """
         response = self.item_table.query(
             KeyConditionExpression=Key('userName').eq(user_name) & Key('itemName').eq(item_name))
+
+        return response['Items']
+
+    def search_items(self, user_name, search_word):
+        print("Searching for word: " + search_word)
+        """ Method to get all items matching search word """
+        response = self.item_table.scan(
+            KeyConditionExpression=Key('userName').eq(
+                user_name) & Key('itemName_search').eq(search_word),
+            FilterExpression=Attr('category_search').eq(search_word) OR
+            Attr('category_search').eq(search_word) OR
+            Attr('location_search').eq(search_word) OR
+            Attr('tags_search').contains(search_word))
 
         return response['Items']
