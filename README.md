@@ -1,7 +1,7 @@
 # 695-Stuff-tracker
 
 ## Unit Test Status:
-_TBD_
+[![CircleCI](https://circleci.com/gh/kunalsatija009/695-Stuff-tracker.svg?style=svg)](https://circleci.com/gh/kunalsatija009/695-Stuff-tracker)
 
 ## Contributors:
 
