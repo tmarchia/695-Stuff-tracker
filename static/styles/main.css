@@ -2579,7 +2579,7 @@ input::-moz-focus-inner {
 		}
 
 			.carousel article.loading {
-				opacity: 0.75;
+				opacity: 0;
 			}
 
 			.carousel article .image {
