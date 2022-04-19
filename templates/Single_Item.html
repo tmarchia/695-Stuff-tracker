@@ -40,9 +40,9 @@
 					<div class="col-4 col-12-mobile" id="sidebar">
 						<hr class="first" />
 						<section>
-							<h3>Tags</h3> <p>{{item["tags"]|join(", ")}}</p>
+							<h3>Tags</h3>
 							{% for tag in item["tags"] %}
-							<p style="display:inline"><a href="{{ url_for('search_items', search_word=tag) }}">{{tag}},</a></p>
+								<p style="display:inline"><a href="{{ url_for('search_items', search_word=tag) }}">{{tag}},</a></p>
 							{% endfor %}
 							<p>Puchase Date: {{item["purchase_date"]}}</p>
 						</section>
