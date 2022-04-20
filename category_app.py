@@ -61,15 +61,10 @@ def create_new_item():
 
     return redirect('/signout')
 
-
-@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
-def update_item(item_name):
-    """ Function for the create new item webpage """
-    if session.get('username'):
-        if request.method == 'POST':
-            item_name = request.form['item_name']
-            img = request.files['item_image']
-            
+@app.route('/upload',method=('POST'))
+def upload_img():
+    if request.method == 'POST':
+            img = request.files['img']
             if img:
                 filename = img
                 img.save(filename)
@@ -79,7 +74,14 @@ def update_item(item_name):
                     Key = filename
                 )
                 msg = "Upload Done ! "
+    return render_template('UpdateItem.html', msg=msg)
 
+@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
+def update_item(item_name):
+    """ Function for the create new item webpage """
+    if session.get('username'):
+        if request.method == 'POST':
+            item_name = request.form['item_name']
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
