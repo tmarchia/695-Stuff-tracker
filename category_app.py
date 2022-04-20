@@ -61,7 +61,6 @@ def create_new_item():
 
     return redirect('/signout')
 
-//image route 
 @app.route('/upload',method=('POST'))
 def upload_img():
     if request.method == 'POST':
