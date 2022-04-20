@@ -3,7 +3,7 @@ This Script is to implement our flask methods to connect to our front end
 """
 import os
 import requests
-import jsons
+import json
 from flask import Flask, request, render_template, redirect, session, url_for
 from BackEnd import CategoryDatabase, ItemDatabase
 import boto3
