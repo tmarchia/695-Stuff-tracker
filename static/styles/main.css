@@ -2395,6 +2395,31 @@ input::-moz-focus-inner {
 		margin-bottom: 0;
 	}
 
+	/*Search */
+
+  .feedback {
+		padding: 10px 20px;
+	}
+
+	#mybutton {
+		position: fixed;
+		bottom: -4px;
+		right: 10px;
+	}
+
+	.search {
+		position: relative;
+		display: flex;
+	}
+
+	.searchButton{
+		Width: 50px;
+	}
+
+	.searchTerm {
+		width: 100%;
+	}
+
 /* Main */
 
 	#main {

@@ -127,6 +127,17 @@ def single_item(item_name):
     return redirect('/signout')
 
 
+@app.route('/search_items/<search_word>', methods=('GET', 'POST'))
+def search_items(search_word):
+    """ Function for search items """
+    if session.get('username'):
+        items = itemDb.search_items(
+            session['username'], search_word.lower())
+        return render_template("search.html", items=items)
+
+    return redirect('/signout')
+
+
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
@@ -134,9 +145,13 @@ def home_page():
         code = request.args.get('code')
         session['username'] = get_user_name(code)
 
-    items = itemDb.get_all_items(session['username'])
+    if request.method == 'GET':
+        items = itemDb.get_all_items(session['username'])
+        return render_template("index.html", username=session['username'], items=items)
 
-    return render_template("index.html", username=session['username'], items=items)
+    elif request.method == 'POST':
+        search_word = request.form['search_word']
+        return redirect(url_for('search_items', search_word=search_word))
 
 
 @app.route('/signout', methods=('GET', 'POST'))
