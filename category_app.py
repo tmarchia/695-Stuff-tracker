@@ -7,7 +7,7 @@ import json
 from flask import Flask, request, render_template, redirect, session, url_for
 from BackEnd import CategoryDatabase, ItemDatabase
 import boto3
-
+from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
@@ -71,7 +71,7 @@ def update_item(item_name):
             item_name = request.form['item_name']
             img = request.files['img']
             if img:
-                filename = img
+                filename = secure_filename(img.filename)
                 img.save(filename)
                 s3.upload_file(
                     Bucket = stevensfixerappimages,
