@@ -21,10 +21,10 @@ categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
 
 s3 = boto3.client('s3',
-                    aws_access_key_id='AKIARGBHMBSJSPJSHO5N^M',
-                    aws_secret_access_key= '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^M^M'
-                     )
-BUCKET_NAME='stevensfixerappimages'
+                  aws_access_key_id='AKIARGBHMBSJSPJSHO5N^M',
+                  aws_secret_access_key='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^M^M'
+                  )
+BUCKET_NAME = 'stevensfixerappimages'
 
 
 @app.route('/create_category', methods=('GET', 'POST'))
@@ -62,21 +62,21 @@ def create_new_item():
     return redirect('/signout')
 
 
-
 @app.route('/update_item/<item_name>', methods=('GET', 'POST'))
 def update_item(item_name):
-    """ Function for the create new item webpage """
+    """ Function for the update item webpage """
     if session.get('username'):
         if request.method == 'POST':
             item_name = request.form['item_name']
-            img = request.files['img']
-            if img:
+            if 'img' in request.files:
+                # Image found
+                img = request.files['img']
                 filename = secure_filename(img.filename)
                 img.save(filename)
                 s3.upload_file(
-                    Bucket = stevensfixerappimages,
+                    Bucket=stevensfixerappimages,
                     Filename=filename,
-                    Key = filename
+                    Key=filename
                 )
                 msg = "Upload Done ! "
             category = request.form['Select Category']
@@ -186,4 +186,5 @@ def get_user_name(code):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, ssl_context=('fullchain.pem', 'privkey.pem'))
+    app.run(host="0.0.0.0", port=5000, ssl_context=(
+        'fullchain.pem', 'privkey.pem'))
