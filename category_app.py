@@ -4,10 +4,18 @@ This Script is to implement our flask methods to connect to our front end
 import os
 import requests
 import jsons
+import boto3
 from flask import Flask, request, render_template, redirect, session, url_for
-from BackEnd import CategoryDatabase, ItemDatabase
+from BackEnd import CategoryDatabase, ItemDatabase 
+
+s3 = boto3.client('s3',
+                    aws_access_key_id='AKIARGBHMBSJSPJSHO5N^M',
+                    aws_secret_access_key= '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^M^M'
+                     )
+BUCKET_NAME='stevensfixerappimages'
 
 app = Flask(__name__)
+secret_key=''
 key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
 if os.path.exists(key_file_path):
     with open(key_file_path) as key_file:
@@ -60,12 +68,25 @@ def update_item(item_name):
     if session.get('username'):
         if request.method == 'POST':
             item_name = request.form['item_name']
+            img = request.files['item_image']
+            
+            if img:
+                filename = "1.png"
+                img.save(filename)
+                s3.upload_file(
+                    Bucket = stevensfixerappimages,
+                    Filename=filename,
+                    Key = filename
+                )
+                msg = "Upload Done ! "
+
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
             itemDb.add_item(session['username'], item_name, category,
                             location, purchase_date, tags)
+            
             return redirect('/home_page')
 
         item = itemDb.get_item_by_name(session['username'], item_name)
@@ -152,4 +173,4 @@ def get_user_name(code):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, ssl_context='adhoc')
+     app.run(host="0.0.0.0", port=5000, ssl_context='adhoc')
