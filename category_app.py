@@ -61,9 +61,14 @@ def create_new_item():
 
     return redirect('/signout')
 
-@app.route('/upload',methods=['POST'])
-def upload_img():
-    if request.method == 'POST':
+
+
+@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
+def update_item(item_name):
+    """ Function for the create new item webpage """
+    if session.get('username'):
+        if request.method == 'POST':
+            item_name = request.form['item_name']
             img = request.files['img']
             if img:
                 filename = img
@@ -74,15 +79,6 @@ def upload_img():
                     Key = filename
                 )
                 msg = "Upload Done ! "
-    return render_template('UpdateItem.html', msg=msg)
-
-
-@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
-def update_item(item_name):
-    """ Function for the create new item webpage """
-    if session.get('username'):
-        if request.method == 'POST':
-            item_name = request.form['item_name']
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
