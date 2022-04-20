@@ -9,7 +9,7 @@ from BackEnd import CategoryDatabase, ItemDatabase
 import boto3
 
 app = Flask(__name__)
-secret_key = ""
+
 key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
 if os.path.exists(key_file_path):
     with open(key_file_path) as key_file:
