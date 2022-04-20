@@ -71,7 +71,7 @@ def update_item(item_name):
             img = request.files['item_image']
             
             if img:
-                filename = "1.png"
+                filename = img
                 img.save(filename)
                 s3.upload_file(
                     Bucket = stevensfixerappimages,
