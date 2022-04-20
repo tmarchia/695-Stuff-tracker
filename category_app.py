@@ -5,7 +5,8 @@ import os
 import requests
 import jsons
 from flask import Flask, request, render_template, redirect, session, url_for
-from BackEnd import CategoryDatabase, ItemDatabase
+from BackEnd import CategoryDatabase, ItemDatabase, 
+import boto3
 
 app = Flask(__name__)
 secret_key = ""
@@ -18,6 +19,12 @@ app.secret_key = secret_key
 
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
+
+s3 = boto3.client('s3',
+                    aws_access_key_id='AKIARGBHMBSJSPJSHO5N^M',
+                    aws_secret_access_key= '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^M^M'
+                     )
+BUCKET_NAME='stevensfixerappimages'
 
 
 @app.route('/create_category', methods=('GET', 'POST'))
@@ -53,6 +60,22 @@ def create_new_item():
         return render_template('AddItem.html', categories=categories)
 
     return redirect('/signout')
+
+//image route 
+@app.route('/upload',method=('POST'))
+def upload_img():
+    if request.method == 'POST':
+            img = request.files['img']
+            if img:
+                filename = img
+                img.save(filename)
+                s3.upload_file(
+                    Bucket = stevensfixerappimages,
+                    Filename=filename,
+                    Key = filename
+                )
+                msg = "Upload Done ! "
+    return render_template('UpdateItem.html', msg=msg)
 
 
 @app.route('/update_item/<item_name>', methods=('GET', 'POST'))
