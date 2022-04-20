@@ -5,7 +5,7 @@ import os
 import requests
 import jsons
 from flask import Flask, request, render_template, redirect, session, url_for
-from BackEnd import CategoryDatabase, ItemDatabase, 
+from BackEnd import CategoryDatabase, ItemDatabase
 import boto3
 
 app = Flask(__name__)
