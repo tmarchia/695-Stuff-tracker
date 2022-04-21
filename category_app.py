@@ -17,22 +17,19 @@ if os.path.exists(key_file_path):
         secret_key = lines[0]
 app.secret_key = secret_key
 
+fixer_key_file_path = '/home/ec2-user/config/FixerKeys.txt'
+if os.path.exists(fixer_key_file_path):
+    with open(fixer_key_file_path) as key_file:
+        lines = key_file.readlines()
+        access_key_id = lines[0].split(':')[1].strip()
+        secret_access_key = lines[1].split(':')[1].strip()
+
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
-
-role_info = {
-    'RoleArn': 'arn:aws:iam::081686957203:role/FixerAppServerRole',
-    'RoleSessionName': 'FixerApp'
-}
-
-STSclient = boto3.client('sts')
-credentials = STSclient.assume_role(**role_info)
-
-s3 = boto3.session.Session(
-    aws_access_key_id=credentials['Credentials']['AccessKeyId'],
-    aws_secret_access_key=credentials['Credentials']['SecretAccessKey'],
-    aws_session_token=credentials['Credentials']['SessionToken']
-)
+s3 = boto3.client('s3',
+                  aws_access_key_id=access_key_id,
+                  aws_secret_access_key=secret_access_key,
+                  region_name='us-east-1')
 
 
 @app.route('/create_category', methods=('GET', 'POST'))
