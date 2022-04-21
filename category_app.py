@@ -67,13 +67,17 @@ def upload_img():
             img = request.files['img']
             if img:
                 filename = img
+                key =  filename
                 img.save(filename)
                 s3.upload_file(
-                    Bucket = stevensfixerappimages,
+                    Bucket=BUCKET_NAME,
                     Filename=filename,
-                    Key = filename
+                    Key = key
+                    
                 )
                 msg = "Upload Done ! "
+            else:
+                print("No image found")
     return render_template('UpdateItem.html', msg=msg)
 
 @app.route('/update_item/<item_name>', methods=('GET', 'POST'))
@@ -86,8 +90,8 @@ def update_item(item_name):
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
-            itemDb.add_item(session['username'], item_name, category,
-                            location, purchase_date, tags)
+            itemDb.add_item(session['username'], item_name, filename, category,
+                             location, purchase_date, tags)
             
             return redirect('/home_page')
 
