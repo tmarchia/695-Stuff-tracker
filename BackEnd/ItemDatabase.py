@@ -27,7 +27,7 @@ class ItemDatabase:
             region_name='us-east-1')
         self.item_table = self.database.Table('ItemTable')
 
-    def add_item(self, user_name, item_name, category, location, purchase_date, tags):
+    def add_item(self, user_name, item_name, filename, category, location, purchase_date, tags):
         """ Method to create a new item for a user """
         tags_list = tags.split(',')
         response = self.item_table.put_item(
@@ -35,6 +35,7 @@ class ItemDatabase:
                   'itemName': item_name,
                   'category': category,
                   'location': location,
+                  'imageName': filename,
                   'purchase_date': purchase_date,
                   'tags': tags_list})
 
