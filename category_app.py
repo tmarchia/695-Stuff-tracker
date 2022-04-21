@@ -20,11 +20,19 @@ app.secret_key = secret_key
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
 
-s3 = boto3.client('s3',
-                  aws_access_key_id='AKIARGBHMBSJSPJSHO5N^M',
-                  aws_secret_access_key='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^M^M'
-                  )
-BUCKET_NAME = 'stevensfixerappimages'
+role_info = {
+    'RoleArn': 'arn:aws:iam::081686957203:role/FixerAppServerRole',
+    'RoleSessionName': 'FixerApp'
+}
+
+STSclient = boto3.client('sts')
+credentials = STSclient.assume_role(**role_info)
+
+s3 = boto3.session.Session(
+    aws_access_key_id=credentials['Credentials']['AccessKeyId'],
+    aws_secret_access_key=credentials['Credentials']['SecretAccessKey'],
+    aws_session_token=credentials['Credentials']['SessionToken']
+)
 
 
 @app.route('/create_category', methods=('GET', 'POST'))
