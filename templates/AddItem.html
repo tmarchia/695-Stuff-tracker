@@ -40,12 +40,7 @@
 
 				<label> <input type="text" name="item_name" placeholder="Item Name"/> </label>
 				<label> <input type="file" id="img" name="img" accept="image/*"> </label>
-				<select name = "Select Category">
-					<option value = "" disable selected>Select Category</option>
-					{% for cat in categories %}
-					<option value = "{{cat["categoryName"]}}">{{cat["categoryName"]}}</option>
-					{% endfor %}
-				  </select>
+				<label> <input type="text" name="Select Category" placeholder="Category"> </label>
 				  <label> <input type="text" name="location" placeholder="Item Location"> </label>
 					<label> <input type="date" name="purchase_date" value="Purchase Date" min="1990-01-01" max="2022-04-22"> </label>
 					<label> <input type="text" name="tags" placeholder="#Tags (comma separated)"/> </label>
