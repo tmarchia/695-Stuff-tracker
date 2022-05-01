@@ -95,12 +95,15 @@ def update_item(item_name):
         if request.method == 'POST':
             item_name = request.form['item_name']
             filename = ""
+            item_filename = ""
             print(request.files)
             if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
                 filename = img.filename
                 key = '/static/' + filename
+                item_filename = item_name + '.jpg'
+                key = '/static/' + item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
@@ -114,7 +117,7 @@ def update_item(item_name):
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
-            itemDb.add_item(session['username'], item_name, filename, category,
+            itemDb.add_item(session['username'], item_name, item_filename, category,
                             location, purchase_date, tags)
             return redirect('/home_page')
 
