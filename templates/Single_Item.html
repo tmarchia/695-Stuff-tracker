@@ -35,6 +35,9 @@
 								<p>Location:     {{item["location"]}}</p>
 							</header>
 							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+							{% if 'imageName' in item.keys() %}
+							<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured"><img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}} Image" /></a>
+							{% endif %}
 						</article>
 					</div>
 					<div class="col-4 col-12-mobile" id="sidebar">
@@ -71,12 +74,17 @@
 				<div class="row">
 					{% for item in related_items %}
 					<article class="col-4 col-12-mobile special">
-						<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+						<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured">
+							{% if 'imageName' in item.keys() %}
+							<img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}} Image" />
+							{% endif %}
+						</a>
 						<header>
-							<h3><a href="{{ url_for('single_item', item_name=item["itemName"], item_category=item["category"]) }}">{{item["itemName_display"]}}</a></h3>
+							<h3><a href="{{ url_for('single_item', item_name=item["itemName"], item_category=item["category"]) }}">{{item["itemName_display"]}}</a>
+							</h3>
 						</header>
-						<p>Category:     {{item["category"]}}</p>
-						<p>Location:     {{item["location"]}}</p>
+							<p>Category:     {{item["category"]}}</p>
+							<p>Location:     {{item["location"]}}</p>
 					</article>
 					{% endfor %}
 				</div>

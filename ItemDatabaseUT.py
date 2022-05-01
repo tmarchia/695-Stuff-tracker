@@ -20,7 +20,7 @@ class ItemDatabaseTest(unittest.TestCase):
 
         item_db = ItemDatabase.ItemDatabase()
         ret_val = item_db.add_item(
-            'testUser', 'shirt', 'closet', 'dresser', '01-01-2022', 'pink,summer')
+            'testUser', 'shirt', '', 'closet', 'dresser', '01-01-2022', 'pink,summer')
         expected_result = True
         self.assertEqual(expected_result, ret_val)
 
@@ -34,7 +34,7 @@ class ItemDatabaseTest(unittest.TestCase):
 
         item_db = ItemDatabase.ItemDatabase()
         ret_val = item_db.add_item(
-            'testUser', 'shirt', 'closet', 'dresser', '01-01-2022', 'pink,summer')
+            'testUser', 'shirt', '', 'closet', 'dresser', '01-01-2022', 'pink,summer')
         ret_val = item_db.update_item('testUser', 'shirt', 'closet', 'rack')
 
         expected_result = True
@@ -50,7 +50,7 @@ class ItemDatabaseTest(unittest.TestCase):
 
         item_db = ItemDatabase.ItemDatabase()
         ret_val = item_db.add_item(
-            'testUser', 'shirt', 'closet', 'dresser', '01-01-2022', 'pink,summer')
+            'testUser', 'shirt', '', 'closet', 'dresser', '01-01-2022', 'pink,summer')
         item_db.delete_item('testUser', 'shirt')
 
         expected_result = True

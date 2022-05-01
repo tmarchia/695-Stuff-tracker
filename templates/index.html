@@ -41,9 +41,15 @@
 
 						{% for item in items %}
 						<article>
-							<a href="Single_Item.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+							{% if 'imageName' in item.keys() %}
+							<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured">
+								<img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}} Image" />
+							</a>
+							{% endif %}
 							<header>
-								<h3><a href="{{ url_for('single_item', item_name=item["itemName"]) }}">{{item["itemName_display"]}}</a></h3>
+								<h3>
+									<a href="{{ url_for('single_item', item_name=item["itemName"]) }}">{{item["itemName_display"]}}</a>
+								</h3>
 							</header>
 						</article>
 						{% endfor %}
