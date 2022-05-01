@@ -113,6 +113,7 @@ def update_item(item_name):
                 print("Upload Done ! ")
             else:
                 print("No image")
+            ptiny(item_filename)
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
