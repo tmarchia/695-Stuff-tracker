@@ -213,7 +213,7 @@ def signout():
     if session.get('username'):
         session.pop('username')
 
-    return redirect("www.stevensfixerapp.com")
+    return redirect("http://www.stevensfixerapp.com")
 
 
 def get_user_name(code):
