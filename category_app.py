@@ -112,8 +112,11 @@ def update_item(item_name):
                 )
                 print("Upload Done ! ")
             else:
-                print("No image")
-            ptiny(item_filename)
+                item = itemDb.get_item_by_name(session['username'], item_name)
+                item_filename = item["imageName"]
+                print("No new image")
+
+            print(item_filename)
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
