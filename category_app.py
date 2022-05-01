@@ -2,20 +2,17 @@
 This Script is to implement our flask methods to connect to our front end
 """
 import os
+import shutil
+
 import requests
 import jsons
 import boto3
-from flask import Flask, request, render_template, redirect, session, url_for
-from BackEnd import CategoryDatabase, ItemDatabase 
 
-s3 = boto3.client('s3',
-                    aws_access_key_id='AKIARGBHMBSJSPJSHO5N^M',
-                    aws_secret_access_key= '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^M^M'
-                     )
-BUCKET_NAME='stevensfixerappimages'
+from flask import Flask, request, render_template, redirect, session, url_for
+from BackEnd import CategoryDatabase, ItemDatabase
 
 app = Flask(__name__)
-secret_key=''
+
 key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
 if os.path.exists(key_file_path):
     with open(key_file_path) as key_file:
@@ -23,8 +20,21 @@ if os.path.exists(key_file_path):
         secret_key = lines[0]
 app.secret_key = secret_key
 
+fixer_key_file_path = '/home/ec2-user/config/FixerKeys.txt'
+if os.path.exists(fixer_key_file_path):
+    with open(fixer_key_file_path) as key_file:
+        lines = key_file.readlines()
+        access_key_id = lines[0].split(':')[1].strip()
+        secret_access_key = lines[1].split(':')[1].strip()
+
+BUCKET_NAME = 'stevensfixerappimages'
+
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
+s3 = boto3.client('s3',
+                  aws_access_key_id=access_key_id,
+                  aws_secret_access_key=secret_access_key,
+                  region_name='us-east-1')
 
 
 @app.route('/create_category', methods=('GET', 'POST'))
@@ -48,11 +58,27 @@ def create_new_item():
     if session.get('username'):
         if request.method == 'POST':
             item_name = request.form['item_name']
+            filename = ""
+            print(request.files)
+            if 'img' in request.files and request.files['img'].filename != '':
+                # Image found
+                img = request.files['img']
+                filename = img.filename
+                key = '/static/' + filename
+                img.save(filename)
+                s3.upload_file(
+                    Bucket=BUCKET_NAME,
+                    Filename=filename,
+                    Key=key
+                )
+                print("Upload Done ! ")
+            else:
+                print("No image")
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
-            itemDb.add_item(session['username'], item_name, category,
+            itemDb.add_item(session['username'], item_name, filename, category,
                             location, purchase_date, tags)
             return redirect('/home_page')
 
@@ -61,38 +87,42 @@ def create_new_item():
 
     return redirect('/signout')
 
-@app.route('/upload',method=('POST'))
-def upload_img():
-    if request.method == 'POST':
-            img = request.files['img']
-            if img:
-                filename = img
-                key =  filename
+
+@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
+def update_item(item_name):
+    """ Function for the update item webpage """
+    if session.get('username'):
+        if request.method == 'POST':
+            item_name = request.form['item_name']
+            filename = ""
+            item_filename = ""
+            print(request.files)
+            if 'img' in request.files and request.files['img'].filename != '':
+                # Image found
+                img = request.files['img']
+                filename = img.filename
+                key = '/static/' + filename
+                item_filename = item_name + '.jpg'
+                key = '/static/' + item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
                     Filename=filename,
-                    Key = key
-                    
+                    Key=key
                 )
-                msg = "Upload Done ! "
+                print("Upload Done ! ")
             else:
-                print("No image found")
-    return render_template('UpdateItem.html', msg=msg)
+                item = itemDb.get_item_by_name(session['username'], item_name)
+                item_filename = item[0]["imageName"]
+                print("No new image")
 
-@app.route('/update_item/<item_name>', methods=('GET', 'POST'))
-def update_item(item_name):
-    """ Function for the create new item webpage """
-    if session.get('username'):
-        if request.method == 'POST':
-            item_name = request.form['item_name']
+            print(item_filename)
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
-            itemDb.add_item(session['username'], item_name, filename, category,
-                             location, purchase_date, tags)
-            
+            itemDb.add_item(session['username'], item_name, item_filename, category,
+                            location, purchase_date, tags)
             return redirect('/home_page')
 
         item = itemDb.get_item_by_name(session['username'], item_name)
@@ -123,6 +153,21 @@ def all_items():
     return redirect('/signout')
 
 
+def images(filename):
+    url = ''
+    if filename != "":
+        url = '/static/' + filename
+        try:
+            s3.download_file(BUCKET_NAME, url, filename)
+            curr_dir = os.getcwd()
+            current = curr_dir + "/" + filename
+            move_to = curr_dir + url
+            shutil.move(current, move_to)
+        except:
+            print("Image " + filename + " not found in S3")
+    return url
+
+
 @app.route('/single_item/<item_name>', methods=('GET', 'POST'))
 def single_item(item_name):
     """ Function for listing a single items """
@@ -135,6 +180,17 @@ def single_item(item_name):
     return redirect('/signout')
 
 
+@app.route('/search_items/<search_word>', methods=('GET', 'POST'))
+def search_items(search_word):
+    """ Function for search items """
+    if session.get('username'):
+        items = itemDb.search_items(
+            session['username'], search_word.lower())
+        return render_template("search.html", items=items)
+
+    return redirect('/signout')
+
+
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
@@ -142,9 +198,13 @@ def home_page():
         code = request.args.get('code')
         session['username'] = get_user_name(code)
 
-    items = itemDb.get_all_items(session['username'])
+    if request.method == 'GET':
+        items = itemDb.get_all_items(session['username'])
+        return render_template("index.html", username=session['username'], items=items)
 
-    return render_template("index.html", username=session['username'], items=items)
+    elif request.method == 'POST':
+        search_word = request.form['search_word']
+        return redirect(url_for('search_items', search_word=search_word))
 
 
 @app.route('/signout', methods=('GET', 'POST'))
@@ -179,4 +239,6 @@ def get_user_name(code):
 
 
 if __name__ == "__main__":
-     app.run(host="0.0.0.0", port=5000, ssl_context='adhoc')
+    app.jinja_env.globals.update(images=images)
+    app.run(host="0.0.0.0", port=5000, ssl_context=(
+        'fullchain.pem', 'privkey.pem'))
