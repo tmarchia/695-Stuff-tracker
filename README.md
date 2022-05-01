@@ -20,8 +20,5 @@ Whether you live in a large house or a cozy apartment, keeping track of the item
 
 For this project our team will create a product that allows users to easily manage and track their possessions in a easy to use and quick to learn way.
 
-## To Run This Software:
-_TBD_
-
 ## Project Details:
 For project details see our wiki page: https://github.com/kunalsatija009/695-Stuff-tracker/wiki
