@@ -59,7 +59,8 @@ def create_new_item():
         if request.method == 'POST':
             item_name = request.form['item_name']
             filename = ""
-            if 'img' in request.files:
+            print(request.files)
+            if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
                 filename = img.filename
@@ -150,15 +151,11 @@ def images(filename):
     if filename != "":
         url = '/static/' + filename
         try:
-            print("THERE")
             s3.download_file(BUCKET_NAME, url, filename)
-            print("HERE")
             curr_dir = os.getcwd()
             current = curr_dir + "/" + filename
             move_to = curr_dir + url
-            print("WHERE")
             shutil.move(current, move_to)
-            print("curr = " + current + "  move: " + move_to)
         except:
             print("Image " + filename + " not found in S3")
     return url
