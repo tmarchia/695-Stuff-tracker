@@ -113,7 +113,7 @@ def update_item(item_name):
                 print("Upload Done ! ")
             else:
                 item = itemDb.get_item_by_name(session['username'], item_name)
-                item_filename = item["imageName"]
+                item_filename = item[0]["imageName"]
                 print("No new image")
 
             print(item_filename)
