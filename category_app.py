@@ -99,7 +99,7 @@ def update_item(item_name):
             if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
-                filename = secure_filenameimg.filename
+                filename = img.filename
                 key = '/static/' + filename
                 img.save(filename)
                 s3.upload_file(
