@@ -4,8 +4,8 @@
 		<title>All Items</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="static/styles/main.css" />
-		<noscript><link rel="stylesheet" href="static/styles/noscript.css" /></noscript>
+		<link rel="stylesheet" href="../static/styles/main.css" />
+		<noscript><link rel="stylesheet" href="../static/css/noscript.css" /></noscript>
 	</head>
 	<body class="no-sidebar is-preload">
 		<div id="page-wrapper">
@@ -14,7 +14,7 @@
                 <!-- Inner -->
                 <div class="inner">
                     <header>
-                        <h1><a id="logo">All Items Under My Roof...</a></h1>
+                        <h1><a id="logo">Search Result</a></h1>
                     </header>
                 </div>
                 <!-- Nav -->
@@ -32,28 +32,29 @@
 		<!-- Main -->
 
 		<!-- Carousel -->
-        <div class="row m1">
+				<div class="row m1">
 					{% for item in items %}
-            <article class="col-4 col-12-mobile special">
-                <a href="Single_Item.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-                <header>
-                    <h3><a href="{{ url_for('single_item', item_name=item["itemName"]) }}">{{item["itemName_display"]}}</a></h3>
-                </header>
-                <p>Category:     {{item["category"]}}</p>
+						<article class="col-4 col-12-mobile special">
+								<a href="Single_Item.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+								<header>
+										<h3><a href="{{ url_for('single_item', item_name=item["itemName"]) }}">{{item["itemName_display"]}}</a></h3>
+								</header>
+								<p>Category:     {{item["category"]}}</p>
 								<p>Location:     {{item["location"]}}</p>
-            </article>
+						</article>
 						{% endfor %}
-        </div>
+				</div>
+
 
 		<!-- Scripts -->
-			<script src="static/js/jquery.min.js"></script>
-			<script src="static/js/jquery.dropotron.min.js"></script>
-			<script src="static/js/jquery.scrolly.min.js"></script>
-			<script src="static/js/jquery.scrollex.min.js"></script>
-			<script src="static/js/browser.min.js"></script>
-			<script src="static/js/breakpoints.min.js"></script>
-			<script src="static/js/util.js"></script>
-			<script src="static/js/main.js"></script>
+			<script src="../static/js/jquery.min.js"></script>
+			<script src="../static/js/jquery.dropotron.min.js"></script>
+			<script src="../static/js/jquery.scrolly.min.js"></script>
+			<script src="../static/js/jquery.scrollex.min.js"></script>
+			<script src="../static/js/browser.min.js"></script>
+			<script src="../static/js/breakpoints.min.js"></script>
+			<script src="../static/js/util.js"></script>
+			<script src="../static/js/main.js"></script>
 
 	</body>
 </html>

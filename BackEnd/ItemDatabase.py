@@ -29,15 +29,20 @@ class ItemDatabase:
 
     def add_item(self, user_name, item_name, filename, category, location, purchase_date, tags):
         """ Method to create a new item for a user """
-        tags_list = tags.split(',')
+        tags_list = tags.replace(' ', '').split(',')
+        tags_list_search = [item.lower() for item in tags_list]
         response = self.item_table.put_item(
             Item={'userName': user_name,
-                  'itemName': item_name,
-                  'category': category,
-                  'location': location,
+                  'itemName': item_name.lower(),
+                  'itemName_display': item_name,
                   'imageName': filename,
+                  'category': category,
+                  'category_search': category.lower(),
+                  'location': location,
+                  'location_search': location.lower(),
                   'purchase_date': purchase_date,
-                  'tags': tags_list})
+                  'tags': tags_list,
+                  'tags_search': tags_list_search})
 
         return response
 
@@ -45,7 +50,7 @@ class ItemDatabase:
         """ Method to update an existing item's information for a user """
         response = self.item_table.update_item(
             Key={'userName': user_name,
-                 'itemName': item_name},
+                 'itemName': item_name.lower()},
             UpdateExpression="set category= :cat, location= :loc",
             ExpressionAttributeValues={
                 ':cat': new_category,
@@ -57,7 +62,7 @@ class ItemDatabase:
         """ Method to delete an existing item for a user """
         response = self.item_table.delete_item(
             Key={'userName': user_name,
-                 'itemName': item_name})
+                 'itemName': item_name.lower()})
         return response
 
     def get_all_items(self, user_name):
@@ -78,6 +83,25 @@ class ItemDatabase:
     def get_item_by_name(self, user_name, item_name):
         """ Method to get all items for a particular category """
         response = self.item_table.query(
-            KeyConditionExpression=Key('userName').eq(user_name) & Key('itemName').eq(item_name))
+            KeyConditionExpression=Key('userName').eq(user_name) & Key('itemName').eq(item_name.lower()))
 
         return response['Items']
+
+    def search_items(self, user_name, search_word):
+        """ Method to get all items matching search word """
+        response = self.item_table.query(
+            KeyConditionExpression=Key('userName').eq(user_name),
+            FilterExpression=Attr('category_search').eq(search_word) |
+            Attr('category_search').eq(search_word) |
+            Attr('location_search').eq(search_word) |
+            Attr('tags_search').contains(search_word))
+
+        items = response['Items']
+
+        response = self.item_table.query(
+            KeyConditionExpression=Key('userName').eq(
+                user_name) & Key('itemName').eq(search_word))
+
+        items += response['Items']
+
+        return items
