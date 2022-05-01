@@ -37,7 +37,7 @@
             <article class="col-4 col-12-mobile special">
 							<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured">
 								{% if 'imageName' in item.keys() %}
-								<img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}} Image" />
+								<img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}}" />
 								{% endif %}
 							</a>
 							<header>

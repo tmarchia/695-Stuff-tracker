@@ -35,7 +35,7 @@
 								<p>Location:     {{item["location"]}}</p>
 							</header>
 							{% if 'imageName' in item.keys() %}
-							<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured"><img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}} Image" /></a>
+							<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured"><img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}}" /></a>
 							{% endif %}
 						</article>
 					</div>
@@ -75,7 +75,7 @@
 					<article class="col-4 col-12-mobile special">
 						<a href="{{ url_for('single_item', item_name=item["itemName"]) }}" class="image featured">
 							{% if 'imageName' in item.keys() %}
-							<img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}} Image" />
+							<img src="{{ images(item["imageName"]) }}" alt="{{item["itemName_display"]}}" />
 							{% endif %}
 						</a>
 						<header>
