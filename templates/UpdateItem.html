@@ -36,9 +36,9 @@
 
 			<!-- Main -->
 
-			<form>
+			<form enctype="multipart/form-data">
 
-				<label> <input type="text" name="item_name" value="{{item["itemName"]}}"/> </label>
+				<label> <input type="text" name="item_name" value="{{item["itemName_display"]}}"/> </label>
 				<label> <input type="file" id="img" name="img" accept="image/*"> </label>
 				<select name = "Select Category">
 					<option value = "{{item["category"]}}" enable selected>{{item["category"]}}</option>
