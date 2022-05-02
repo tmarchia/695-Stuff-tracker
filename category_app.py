@@ -67,6 +67,7 @@ def create_new_item():
                 item_filename = item_name + '.jpg'
                 key = '/static/' + \
                     session.get('username') + '/' + item_name + '.jpg'
+                key = '/static/' + '/' + item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
@@ -105,6 +106,7 @@ def update_item(item_name):
                 item_filename = item_name + '.jpg'
                 key = '/static/' + \
                     session.get('username') + '/' + item_name + '.jpg'
+                key = '/static/' + '/' + item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
@@ -158,6 +160,7 @@ def images(filename):
     url = ''
     if filename != "":
         url = '/static/' + session.get('username') + '/' + filename
+        url = '/static/' + '/' + filename
         try:
             s3.download_file(BUCKET_NAME, url, filename)
             curr_dir = os.getcwd()
