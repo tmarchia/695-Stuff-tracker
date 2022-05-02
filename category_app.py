@@ -59,12 +59,13 @@ def create_new_item():
         if request.method == 'POST':
             item_name = request.form['item_name']
             filename = ""
-            print(request.files)
+            item_filename = ""
             if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
                 filename = img.filename
-                key = '/static/' + filename
+                item_filename = item_name + '.jpg'
+                key = '/static/' + + session.get('username') + '/' item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
@@ -78,8 +79,8 @@ def create_new_item():
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
-            itemDb.add_item(session['username'], item_name, filename, category,
-                            location, purchase_date, tags)
+            itemDb.add_item(session['username'], item_name,
+                            item_filename, category, location, purchase_date, tags)
             return redirect('/home_page')
 
         categories = categoryDb.get_categories(session['username'])
@@ -96,14 +97,12 @@ def update_item(item_name):
             item_name = request.form['item_name']
             filename = ""
             item_filename = ""
-            print(request.files)
             if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
                 filename = img.filename
-                key = '/static/' + filename
                 item_filename = item_name + '.jpg'
-                key = '/static/' + item_name + '.jpg'
+                key = '/static/' + + session.get('username') + '/' item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
@@ -121,8 +120,8 @@ def update_item(item_name):
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
-            itemDb.add_item(session['username'], item_name, item_filename, category,
-                            location, purchase_date, tags)
+            itemDb.add_item(session['username'], item_name,
+                            item_filename, category, location, purchase_date, tags)
             return redirect('/home_page')
 
         item = itemDb.get_item_by_name(session['username'], item_name)
@@ -156,7 +155,7 @@ def all_items():
 def images(filename):
     url = ''
     if filename != "":
-        url = '/static/' + filename
+        url = '/static/' + session.get('username') + '/' + filename
         try:
             s3.download_file(BUCKET_NAME, url, filename)
             curr_dir = os.getcwd()
