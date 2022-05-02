@@ -13,6 +13,7 @@ from BackEnd import CategoryDatabase, ItemDatabase
 
 app = Flask(__name__)
 
+# Access secret key needed for session
 key_file_path = '/home/ec2-user/config/SecretSessionKey.txt'
 if os.path.exists(key_file_path):
     with open(key_file_path) as key_file:
@@ -20,6 +21,7 @@ if os.path.exists(key_file_path):
         secret_key = lines[0]
 app.secret_key = secret_key
 
+# Access AWS keys needed to access AWS services
 fixer_key_file_path = '/home/ec2-user/config/FixerKeys.txt'
 if os.path.exists(fixer_key_file_path):
     with open(fixer_key_file_path) as key_file:
@@ -29,6 +31,7 @@ if os.path.exists(fixer_key_file_path):
 
 BUCKET_NAME = 'stevensfixerappimages'
 
+# Setup connections to dynamoDb and S3
 categoryDb = CategoryDatabase.CategoryDatabase()
 itemDb = ItemDatabase.ItemDatabase()
 s3 = boto3.client('s3',
@@ -44,7 +47,9 @@ def create_new_category():
         if request.method == 'POST':
             category = request.form['AddArea']
             location = request.form['location']
+
             categoryDb.create_category(session['username'], category, location)
+
             return redirect('/home_page')
 
         return render_template('AddCategory.html')
@@ -58,33 +63,44 @@ def create_new_item():
     if session.get('username'):
         if request.method == 'POST':
             item_name = request.form['item_name']
+
+            # If image was added store in S3
             filename = ""
             item_filename = ""
             if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
                 filename = img.filename
-                item_filename = item_name + '.jpg'
+                item_filename = item_name + '.jpg'  # Name used for stored image
                 key = '/static/' + \
                     session.get('username') + '/' + item_name + '.jpg'
+
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
                     Filename=filename,
                     Key=key
                 )
+                curr_dir = os.getcwd()
+                os.remove(curr_dir + '/' + filename)
+
                 print("Upload Done ! " + key)
             else:
                 print("No image")
+
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
+
             itemDb.add_item(session['username'], item_name,
                             item_filename, category, location, purchase_date, tags)
+
             return redirect('/home_page')
 
+        # Pass users current categories to be used as options when adding item
         categories = categoryDb.get_categories(session['username'])
+
         return render_template('AddItem.html', categories=categories)
 
     return redirect('/signout')
@@ -96,38 +112,48 @@ def update_item(item_name):
     if session.get('username'):
         if request.method == 'POST':
             item_name = request.form['item_name']
+
+            # If image was added store in S3
             filename = ""
             item_filename = ""
             if 'img' in request.files and request.files['img'].filename != '':
                 # Image found
                 img = request.files['img']
                 filename = img.filename
-                item_filename = item_name + '.jpg'
+                item_filename = item_name + '.jpg'  # Name used for stored image
                 key = '/static/' + \
-                    session.get('username') + '/' + item_name + '.jpg'
+                    session.get('username') + '/' + item_filename
+
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
                     Filename=filename,
                     Key=key
                 )
+                curr_dir = os.getcwd()
+                os.remove(curr_dir + '/' + filename)
+
                 print("Upload Done ! " + key)
             else:
+                # If image not added on update keep previous image_name key/item
                 item = itemDb.get_item_by_name(session['username'], item_name)
                 item_filename = item[0]["imageName"]
                 print("No new image")
 
-            print(item_filename)
             category = request.form['Select Category']
             location = request.form['location']
             purchase_date = request.form['purchase_date']
             tags = request.form['tags']
+
             itemDb.add_item(session['username'], item_name,
                             item_filename, category, location, purchase_date, tags)
+
             return redirect('/home_page')
 
+        # Populate update page with current item values
         item = itemDb.get_item_by_name(session['username'], item_name)
         categories = categoryDb.get_categories(session['username'])
+
         return render_template('UpdateItem.html', categories=categories, item=item[0])
 
     return redirect('/signout')
@@ -138,7 +164,6 @@ def delete_item(item_name):
     """ Function for the deleting an item """
     if session.get('username'):
         itemDb.delete_item(session['username'], item_name)
-
         return redirect(url_for("home_page"))
 
     return redirect('/signout')
@@ -155,14 +180,21 @@ def all_items():
 
 
 def images(filename):
+    """ Method used to retrieve item and item location """
     url = ''
     if filename != "":
-        url = '/static/' + session.get('username') + '/' + filename
+        path = '/static/' + session.get('username') + '/'
+        url = path + filename
         try:
+            # Try to get file from S3 and move to static folder for user
             s3.download_file(BUCKET_NAME, url, filename)
+
             curr_dir = os.getcwd()
             current = curr_dir + "/" + filename
             move_to = curr_dir + url
+            if not os.path.exists(curr_dir + path):
+                os.makedirs(curr_dir + path)
+
             shutil.move(current, move_to)
         except:
             print("Image " + url + " not found in S3")
@@ -171,11 +203,14 @@ def images(filename):
 
 @app.route('/single_item/<item_name>', methods=('GET', 'POST'))
 def single_item(item_name):
-    """ Function for listing a single items """
+    """ Function for displaying a single items """
     if session.get('username'):
         item = itemDb.get_item_by_name(session['username'], item_name)
+
+        # Get related items to list below single item
         related_items = itemDb.get_items_by_category(
             session['username'], item[0]['category'])
+
         return render_template("Single_Item.html", item=item[0], related_items=related_items)
 
     return redirect('/signout')
@@ -205,7 +240,9 @@ def home_page():
 
     elif request.method == 'POST':
         search_word = request.form['search_word']
-        return redirect(url_for('search_items', search_word=search_word))
+        if search_word != "":
+            return redirect(url_for('search_items', search_word=search_word))
+        return redirect('/home_page')
 
 
 @app.route('/signout', methods=('GET', 'POST'))
@@ -213,11 +250,11 @@ def signout():
     """ Function for signing out """
     if session.get('username'):
         session.pop('username')
-
     return redirect("http://www.stevensfixerapp.com")
 
 
 def get_user_name(code):
+    """ Using access token retrieve user name """
     # Get access token
     url = 'https://fixerapp.auth.us-east-1.amazoncognito.com/oauth2/token'
     headers = {'Accept-Encoding': 'gzip, deflate',
