@@ -75,11 +75,14 @@ def create_new_item():
                 key = '/static/' + \
                     session.get('username') + '/' + item_name + '.jpg'
 
+                img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
                     Filename=filename,
                     Key=key
                 )
+                curr_dir = os.getcwd()
+                os.remove(curr_dir + '/' + filename)
 
                 print("Upload Done ! " + key)
             else:
@@ -121,11 +124,14 @@ def update_item(item_name):
                 key = '/static/' + \
                     session.get('username') + '/' + item_filename
 
+                img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
                     Filename=filename,
                     Key=key
                 )
+                curr_dir = os.getcwd()
+                os.remove(curr_dir + '/' + filename)
 
                 print("Upload Done ! " + key)
             else:
@@ -186,8 +192,8 @@ def images(filename):
             curr_dir = os.getcwd()
             current = curr_dir + "/" + filename
             move_to = curr_dir + url
-            if not os.path.exists(path):
-                os.makedirs(path)
+            if not os.path.exists(curr_dir + path):
+                os.makedirs(curr_dir + path)
 
             shutil.move(current, move_to)
         except:
