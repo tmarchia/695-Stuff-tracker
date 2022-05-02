@@ -65,7 +65,8 @@ def create_new_item():
                 img = request.files['img']
                 filename = img.filename
                 item_filename = item_name + '.jpg'
-                key = '/static/' + + session.get('username') + '/' item_name + '.jpg'
+                key = '/static/' + \
+                    session.get('username') + '/' + item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
@@ -102,7 +103,8 @@ def update_item(item_name):
                 img = request.files['img']
                 filename = img.filename
                 item_filename = item_name + '.jpg'
-                key = '/static/' + + session.get('username') + '/' item_name + '.jpg'
+                key = '/static/' + \
+                    session.get('username') + '/' + item_name + '.jpg'
                 img.save(filename)
                 s3.upload_file(
                     Bucket=BUCKET_NAME,
