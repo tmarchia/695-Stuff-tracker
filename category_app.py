@@ -227,12 +227,6 @@ def search_items(search_word):
     return redirect('/signout')
 
 
-@app.route('/search_items', methods=('GET', 'POST'))
-def search_items():
-    """ Function for empty search """
-    return redirect('/home_page')
-
-
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
@@ -246,7 +240,9 @@ def home_page():
 
     elif request.method == 'POST':
         search_word = request.form['search_word']
-        return redirect(url_for('search_items', search_word=search_word))
+        if search_word != "":
+            return redirect(url_for('search_items', search_word=search_word))
+        return redirect('/home_page')
 
 
 @app.route('/signout', methods=('GET', 'POST'))
