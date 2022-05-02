@@ -227,6 +227,12 @@ def search_items(search_word):
     return redirect('/signout')
 
 
+@app.route('/search_items', methods=('GET', 'POST'))
+def search_items():
+    """ Function for empty search """
+    return redirect('/home_page')
+
+
 @app.route('/home_page/', methods=('GET', 'POST'))
 def home_page():
     """ Function for rendering homepage """
