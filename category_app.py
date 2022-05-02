@@ -73,7 +73,7 @@ def create_new_item():
                     Filename=filename,
                     Key=key
                 )
-                print("Upload Done ! ")
+                print("Upload Done ! " + key)
             else:
                 print("No image")
             category = request.form['Select Category']
@@ -111,7 +111,7 @@ def update_item(item_name):
                     Filename=filename,
                     Key=key
                 )
-                print("Upload Done ! ")
+                print("Upload Done ! " + key)
             else:
                 item = itemDb.get_item_by_name(session['username'], item_name)
                 item_filename = item[0]["imageName"]
@@ -165,7 +165,7 @@ def images(filename):
             move_to = curr_dir + url
             shutil.move(current, move_to)
         except:
-            print("Image " + filename + " not found in S3")
+            print("Image " + url + " not found in S3")
     return url
 
 
