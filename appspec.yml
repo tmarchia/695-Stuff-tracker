@@ -3,8 +3,4 @@ os: linux
 files:
   - source: /
     destination: /var/www/html/Fixer
-hooks:
-  AfterInstall:
-    - location: scripts/deploy_app.sh
-      timeout: 300
-      runas: root
+
